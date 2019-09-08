@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version db559f98d6c99655936abc96647a0e88ba98a9cf" name="generator">
   <link href="https://httpslocal.github.io/proposals/" rel="canonical">
-  <meta content="9e91f27b1de23272613ced8c50f58db0b037bda1" name="document-revision">
+  <meta content="a624879314ee299f5ac2bf74cb003e59b89014aa" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1461,7 +1461,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Possible Solutions for HTTPS in Local Network</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2019-09-08">8 September 2019</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Draft Community Group Report, <time class="dt-updated" datetime="2019-09-09">9 September 2019</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -1737,7 +1737,7 @@ This will enable binding the displayed domain name to the physical device.</p>
    <h5 class="heading settled" data-level="5.2.1.2" id="sol-2-coap"><span class="secno">5.2.1.2. </span><span class="content"><a data-link-type="dfn" href="#cross-origin-access-pattern" id="ref-for-cross-origin-access-pattern">Cross-Origin Access Pattern</a></span><a class="self-link" href="#sol-2-coap"></a></h5>
    <p>When a <a data-link-type="dfn" href="#web-service" id="ref-for-web-service">web service</a> (e.g., <code>https://device-user.example.com</code>) accesses the <a data-link-type="dfn" href="#device" id="ref-for-device①⑨">device</a> via the <a data-link-type="dfn" href="#ua" id="ref-for-ua①③">UA</a>.
 The <a data-link-type="dfn" href="#ua" id="ref-for-ua①④">UA</a> allows the access only if the user grants the access through the UI shown in the figure below.</p>
-   <div align="center"> <img src="figs/fig_solution_1_2.png" width="480px"> </div>
+   <div align="center"> <img src="figs/fig_sol_2_2.png" width="480px"> </div>
    <p>The UI will be displayed when the underlying <a data-link-type="biblio" href="#biblio-fetch">[FETCH]</a> API is called for the access
 with the extension below and the <a data-link-type="dfn" href="#device" id="ref-for-device②⓪">device</a> successfully performs a TLS handshake
 using a PAKE-based cipher suite.</p>
@@ -1791,7 +1791,7 @@ From the standpoint of <a data-link-type="dfn" href="#web-service" id="ref-for-w
 should be delegated to a user’s judgement.</p>
    <p>This solution resolves the problem by introducing an <a data-link-type="biblio" href="#biblio-ietf-ace-wg">[IETF-ACE-WG]</a> and <a data-link-type="biblio" href="#biblio-ietf-oauth-wg">[IETF-OAUTH-WG]</a> based
 AS (Authorization Server) as an authority of the <a data-link-type="dfn" href="#device" id="ref-for-device②④">device</a> into the local HTTPS system as shown below.</p>
-   <div align="center"> <img src="figs/fig_solution_2_1.png" width="480px"> </div>
+   <div align="center"> <img src="figs/fig_sol_3_1.png" width="480px"> </div>
    <p>The ACE components have the following relationships:</p>
    <ul>
     <li data-md>
@@ -1838,7 +1838,7 @@ fetch<c- p>(</c-><c- u>"https://device.local/stuff"</c-><c- p>,</c-> <c- p>{</c-
 </pre>
    </div>
    <p>When the <a data-link-type="biblio" href="#biblio-fetch">[FETCH]</a> API above is called, the <a data-link-type="dfn" href="#ua" id="ref-for-ua①⑧">UA</a> shows a following pop-up window.</p>
-   <div align="center"> <img src="figs/fig_solution_2_2.png" width="480px"> </div>
+   <div align="center"> <img src="figs/fig_sol_3_2.png" width="480px"> </div>
    <p>As the result, HTTPS accesses from the <a data-link-type="dfn" href="#web-service" id="ref-for-web-service③">web service</a> to the <a data-link-type="dfn" href="#device" id="ref-for-device③⓪">device</a> are achieved
 by the <a data-link-type="dfn" href="#ua" id="ref-for-ua①⑨">UA</a> based on the trust relationship between the client and the AS (and the <a data-link-type="dfn" href="#device" id="ref-for-device③①">device</a>)
 and with user’s explicit approval.</p>
@@ -1887,7 +1887,7 @@ certificates or <a data-link-type="dfn" href="#private-ca" id="ref-for-private-c
    </div>
    <p>Similar to earlier solutions, the <a data-link-type="dfn" href="#ua" id="ref-for-ua②①">UA</a> shows a following pop-up window
 when the <a data-link-type="biblio" href="#biblio-fetch">[FETCH]</a> API above is called.</p>
-   <div align="center"> <img src="figs/fig_solution_3_1.png" width="480px"> </div>
+   <div align="center"> <img src="figs/fig_sol_4_1.png" width="480px"> </div>
    <p>For this solution, we argue that the framework on which a device vendor
 validates domain names of the <a data-link-type="dfn" href="#device" id="ref-for-device③⑤">devices</a> and guarantees the authenticity
 of them would be useful even if the names are local names.

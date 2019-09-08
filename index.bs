@@ -216,7 +216,7 @@ When a [=web service=]  (e.g., `https://device-user.example.com`) accesses the [
 The [=UA=] allows the access only if the user grants the access through the UI shown in the figure below.
 
 <div align="center">
-<img src="figs/fig_solution_1_2.png" width="480px">
+<img src="figs/fig_sol_2_2.png" width="480px">
 </div>
 
 The UI will be displayed when the underlying [[FETCH]] API is called for the access
