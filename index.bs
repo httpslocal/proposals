@@ -1,15 +1,15 @@
 <pre class='metadata'>
-Title: Possible Solutions for HTTPS in Local Network
-Shortname: httpslocal-possible-solutions
+Title: Approaches to achieving HTTPS in Local Network
+Shortname: httpslocal-approaches
 Level: 1
 Status: CG-DRAFT
 Group: httpslocal
 URL: https://httpslocal.github.io/proposals/
 Editor: Contributors on GitHub, https://github.com/httpslocal/proposals/graphs/contributors
-Abstract: This document describes possible solutions for browsers to communicate with HTTPS servers in local network.
-    All of the solutions in this document are not feasible on existing web standards for
+Abstract: This document describes technical approaches for browsers to communicate with HTTPS servers in local network.
+    All of the approaches in this document are not feasible on existing web standards for
     the browser and/or related communication protocols and systems. Therefore, this document
-    describes not only the explanation of each solution itself but also related requirements for the browser,
+    describes not only the explanation of each approach itself but also related requirements for the browser,
     and required standardization activities on the communication protocols and systems.
 Repository: https://github.com/httpslocal/proposals
 Markup Shorthands: markdown yes
@@ -33,16 +33,16 @@ from accessing and collaborating with the devices. In addition, the devices cann
 powerful features ([[SECURE-CONTEXTS]]) on their web-based UIs.
 The local devices have been marginalized in the current secure web.
 
-In this document, we propose comprehensive possible solutions to address the problem
-on using HTTPS in local network. All of the solutions in this document are
+In this document, we propose comprehensive technical approaches to address the problem
+on using HTTPS in local network. All of the approaches in this document are
 not feasible on existing web standards for the browser and/or related communication
 protocols and systems. Therefore, this document describes not only the explanation
-of each solution itself but also related requirements for the browser,
+of each approach itself but also related requirements for the browser,
 and required standardization activities on the communication protocols and systems.
 
 The purpose of this document is to initiate discussions and receive feedbacks
 from the W3C members especially from the browser vendors and web developers.
-Authors of this document are aware that the proposed solutions might not be based
+Authors of this document are aware that the proposed approaches might not be based
 on the current design and security policies of the browser implementations
 but certainly hope that the community will update these policies to cater
 the need for new emerging markets, such as Internet of Things (IoT).
@@ -73,17 +73,17 @@ A <dfn>private CA</dfn> is a CA responsible for issuing the [=non-Web PKI certif
 Scope {#scope}
 ==============
 
-The solutions proposed in [[#possible-solutions]] are based on the use cases
+The approaches proposed in [[#technical-approaches]] are based on the use cases
 and the requirements defined in [[HTTPSLOCAL-USECASES]].
 
 ## Target [=Devices=] ## {#target-devices}
 
-To focus on the problem on using HTTPS in [=local network=], solutions for publicly
+To focus on the problem on using HTTPS in [=local network=], approaches for publicly
 accessbile [=devices=] are out of scope. Actually, it is easy for such kind of devices
 to get [=Web PKI certificates=] so there are few technical challenges on browser
 implementations and related standardization activities. Therefore, this document
-does not contain the solutions for the publicly accessible [=devices=]
-as [[#possible-solutions]] but as [[#existing-solutions]].
+does not contain the approaches for the publicly accessible [=devices=]
+as [[#technical-approaches]] but as [[#existing-solutions]].
 
 ## Target Local Networks ## {#target-local-networks}
 
@@ -117,12 +117,12 @@ They are as follows:
     with a browser API (e.g., [[FETCH]]) and receives the contents.
     - Related use cases: [[UC-01]], [[UC-02]], [[UC-03]], [[UC-04]], [[UC-05]], [[UC-06]], [[UC-08]], [[UC-09]]
 
-All solutions proposed in this document are based on either one or both of the access patterns.
+All approaches proposed in this document are based on either one or both of the access patterns.
 
 Existing Solutions {#existing-solutions}
 ==========================================
 
-Before providing the list of the possible solutions, we'd like to walk through existing solutions.
+Before providing the list of the technical approaches, we'd like to walk through existing solutions.
 
 ## Web PKI based Solutions ## {#existing-sol-1}
 
@@ -152,25 +152,25 @@ as a trusted one manually is a widely used solution.
 
 NOTE: Write the problems of this solution here.
 
-Possible Solutions {#possible-solutions}
+Technical Approaches {#technical-approaches}
 ========================================
 
-In this section, we describes possible solutions for using HTTPS in [=local network=]
+In this section, we describes technical approaches for using HTTPS in [=local network=]
 except for using normal [=Web PKI certificates=], and complicated (and maybe dangerous)
 manual operations referred in [[#existing-solutions]].
 
-Each solution defined in the following sections is categorized
+Each approach defined in the following sections is categorized
 based on the first class requirement, [[REQ-1]]: Guarantee of Device Trustworthiness.
 
-## Web PKI based Solutions ## {#web-pki-solutions}
+## Web PKI based Approaches ## {#web-pki-approaches}
 
-### SOL-1: Using Name Constraints Certificates ### {#sol-1}
+### APPROACH-1: Using Name Constraints Certificates ### {#approach-1}
 
-NOTE: Name constraints certificate based solution here.
+NOTE: Name constraints certificate based approach here.
 
-## Non-Web PKI based Solutions ## {#non-web-pki-solutions}
+## Non-Web PKI based Approaches ## {#non-web-pki-approaches}
 
-In this section, we describe three technical solutions for communications
+In this section, we describe three technical approaches for communications
 between a [=UA=] and a local server that has private domain names.
 
 NOTE: For the following discussions, we use `device.local` as an example of
@@ -178,17 +178,17 @@ a domain name of a [=device=]. Of course, other local domain names (e.g., `devic
 are applicable name which can be resolved but the name resolution methods
 should not be restricted only to mDNS ([[RFC6762]]).
 
-### SOL-2: Using Shared Secret ### {#sol-2}
+### APPROACH-2: Using Shared Secret ### {#approach-2}
 
-This solution is based on the user grant and the use of shared password in
+This approach is based on the user grant and the use of shared password in
 which PAKE (e.g., J-PAKE([[RFC8236]])) is used for the establishment of
 a TLS session between the [=UA=] and the [=device=].
 It is worthwhile to mention that J-PAKE has already been implemented in [[MBED-TLS]]
 and also the use of J-PAKE has been discussed in [[W3C-SECOND-SCREEN-WG]].
 
-This solution can be realized on both of the access patterns mentioned in [[#target-access-patterns]].
+This approach can be realized on both of the access patterns mentioned in [[#target-access-patterns]].
 
-#### [=Normal Access Pattern=] #### {#sol-2-nap}
+#### [=Normal Access Pattern=] #### {#approach-2-nap}
 
 When a user inputs a [=device=] URL (`https://device.local`) to the address bar of the [=UA=] directly,
 the [=UA=] allows the access only if the user grants the access through the UI shown in the figure below.
@@ -210,7 +210,7 @@ get a web UI of the [=device=] without any negative security indicators.
 The above flow can be achieved by extending the UI with adding the cipher suites in the browser.
 This will enable binding the displayed domain name to the physical device.
 
-#### [=Cross-Origin Access Pattern=] #### {#sol-2-coap}
+#### [=Cross-Origin Access Pattern=] #### {#approach-2-coap}
 
 When a [=web service=]  (e.g., `https://device-user.example.com`) accesses the [=device=] via the [=UA=].
 The [=UA=] allows the access only if the user grants the access through the UI shown in the figure below.
@@ -224,7 +224,7 @@ with the extension below and the [=device=] successfully performs a TLS handshak
 using a PAKE-based cipher suite.
 
 <div class="example">
-The following code is an example of [[FETCH]] API extension to support this solution.
+The following code is an example of [[FETCH]] API extension to support this approach.
 <pre highlight="js">
 fetch("https://device.local/stuff", {
   // The following extension might be available only to private domain names.
@@ -238,16 +238,16 @@ fetch("https://device.local/stuff", {
 </pre>
 </div>
 
-Subsequent flow is the same as the [[#sol-2-nap]].
-To achieve this [=cross-origin access pattern=] flow, in addition to the extensions required by [[#sol-2-nap]],
+Subsequent flow is the same as the [[#approach-2-nap]].
+To achieve this [=cross-origin access pattern=] flow, in addition to the extensions required by [[#approach-2-nap]],
 the [=UA=] have to support the [[FETCH]] API extension demonstrated above.
 
 NOTE: However, a specific method on how to bind the name to the TLS session
 needs to be defined to distinguish [=devices=] which have the same names as mentioned
-in [[HTTPS-FOR-LOCAL-DOMAINS]]. This method is needed for both solutions [[#sol-3]] and [[#sol-4]].
+in [[HTTPS-FOR-LOCAL-DOMAINS]]. This method is needed for both approaches [[#approach-3]] and [[#approach-4]].
 For example, using device ‘local domain name + fingerprint in self-signed certificate’
 as the TLS server identifier (which is defined in [[EC-JPAKE]] can be considered as
-one of the candidate solutions. The use of self-signed certificate after the first
+one of the candidate approaches. The use of self-signed certificate after the first
 J-PAKE based TLS session needs to be defined as well. This will mitigate the PIN or
 password entry for subsequent TLS sessions.
 
@@ -260,20 +260,20 @@ The requirements for browsers can be summarized as follows:
 
 #### Dependency to other SDOs #### {#dependency-2}
 
-This solution will require work and collaboration with the IETF.
+This approach will require work and collaboration with the IETF.
 - [[EC-JPAKE]] was an individual submission and it is currently expired.
-    If W3C embraces this solution, the work needs to resumed and completed.
+    If W3C embraces this approach, the work needs to resumed and completed.
 - A method to bind a domain name to a TLS session over [[EC-JPAKE]] needs to 
     be specified and standardized.
 
-### SOL-3: Using Application Layer Access Token ### {#sol-3}
+### APPROACH-3: Using Application Layer Access Token ### {#approach-3}
 
-In [[#sol-2]], there is no trust anchor that can guarantee the authenticity of [=devices=]
+In [[#approach-2]], there is no trust anchor that can guarantee the authenticity of [=devices=]
 and it is difficult for users to find whether the [=device=] is a legitimate one.
 From the standpoint of [=web services=], it is often argued whether a server authentication
 should be delegated to a user’s judgement.
 
-This solution resolves the problem by introducing an [[IETF-ACE-WG]] and [[IETF-OAUTH-WG]] based
+This approach resolves the problem by introducing an [[IETF-ACE-WG]] and [[IETF-OAUTH-WG]] based
 AS (Authorization Server) as an authority of the [=device=] into the local HTTPS system as shown below.
 
 <div align="center">
@@ -300,12 +300,12 @@ need to be extended to enable the client to access the [=device=] only when the 
 provides the [=UA=] with the RS information (a self-signed certificate or RPK)
 as a trusted one.
 
-#### [=Cross-Origin Access Pattern=] #### {#sol-3-coap}
+#### [=Cross-Origin Access Pattern=] #### {#approach-3-coap}
 
 The RS information can be sent to the [=UA=] as an extended parameter of [[FETCH]] API as follows:
 
 <div class="example">
-The following code is an example of [[FETCH]] API extension to support this solution.
+The following code is an example of [[FETCH]] API extension to support this approach.
 <pre highlight="js">
 // When RS Information includes a RPK, 
 fetch("https://device.local/stuff", {
@@ -338,7 +338,7 @@ and with user’s explicit approval.
 
 In addition, when the trust relationship between AS and the [=devices=] is built on attestation
 keys in TPM (Trusted Platform Module) on the [=devices=], the authenticity of the [=devices=] can
-be enhanced. The use of the attestation keys is applicable to [[#sol-4]] as well.
+be enhanced. The use of the attestation keys is applicable to [[#approach-4]] as well.
 
 #### Browser Requirements #### {#requirements-3}
 
@@ -349,27 +349,27 @@ The requirements for browsers can be summarized as follows:
 
 #### Dependency to other SDOs #### {#dependency-3}
 
-This solution will require work and collaboration with the IETF.
+This approach will require work and collaboration with the IETF.
 - HTTPS profile for ACE (or extensions for OAuth): Since ACE is based on CoAP/OSCORE,
     it is necessary to define either a HTTPS profile for ACE or an extension to COAP/OSCORE
     under the assumption that the RSs are distributed and deployed in [=local network=].
 
-### SOL-4: Using Device Authority-Issued Certificate ### {#sol-4}
+### APPROACH-4: Using Device Authority-Issued Certificate ### {#approach-4}
 
-In this solution, the [=web service=] trusts a vendor (device authority) issued private certificate
+In this approach, the [=web service=] trusts a vendor (device authority) issued private certificate
 and asks the [=UA=] to pin the certificate as a trusted one
 (only in the web service’s secure context) based on user grant.
-The trust can be built as an extension to [[#sol-3]] in which
+The trust can be built as an extension to [[#approach-3]] in which
 AS has a [=private CA=] role and the [=web service=] trusts a [=private CA=] issued certificate
 based either on a pre-registered relationship with the CA and AS or by some other means.
 
-This solution can be realized by extending the browser API and related UI
-in a similar way as shown in [[#sol-3]]. Specifically, by extending the [[FETCH]] API
+This approach can be realized by extending the browser API and related UI
+in a similar way as shown in [[#approach-3]]. Specifically, by extending the [[FETCH]] API
 as described below, it enables web services to provide the browsers with private CA
 certificates or [=private CA=] issued certificates as trusted ones.
 
 <div class="example">
-The following code is an example of [[FETCH]] API extension to support this solution.
+The following code is an example of [[FETCH]] API extension to support this approach.
 <pre highlight="js">
 fetch("https://device.local/stuff", {
   tlsExtension: {
@@ -381,14 +381,14 @@ fetch("https://device.local/stuff", {
 </pre>
 </div>
 
-Similar to earlier solutions, the [=UA=] shows a following pop-up window
+Similar to earlier approaches, the [=UA=] shows a following pop-up window
 when the [[FETCH]] API above is called.
 
 <div align="center">
 <img src="figs/fig_sol_4_1.png" width="480px">
 </div>
 
-For this solution, we argue that the framework on which a device vendor
+For this approach, we argue that the framework on which a device vendor
 validates domain names of the [=devices=] and guarantees the authenticity
 of them would be useful even if the names are local names.
 A domain-validated certificate can be issued by using the OOB (Out-of-Band)
@@ -400,7 +400,7 @@ is executed by the ACME server’s frontend loaded on a browser
 that can communicate with the [=device=] in a [=local network=].
 Although the challenge through the [=UA=] has some advantages
 (e.g., it can be based on a user grant, there is no need to change the firewall settings),
-it requires a [[FETCH]] API extension for solution #2 that enables the access to the device
+it requires a [[FETCH]] API extension for approach #2 that enables the access to the device
 based on self-signed certificates or RPKs.
 
 It is important to note that there are other industry efforts on similar concepts
@@ -421,17 +421,17 @@ The requirements for browsers can be summarized as follows:
 
 #### Dependency to other SDOs #### {#dependency-4}
 
-This solution will require work and collaboration with the IETF.
+This approach will require work and collaboration with the IETF.
 - [[PKI-CERTIFICATE-IDENTIFIER-FORMAT-FOR-DEVICES]] is currently an individual submission yet. 
 - The ACME extension as described above.
 
-## Pros and Cons of the Solutions ## {#pros-cons}
+## Pros and Cons of the Approaches ## {#pros-cons}
 
-NOTE: Write a table that shows relations between the requirements (REQ-x) and the solutions (SOL-x).
+NOTE: Write a table that shows relations between the requirements (REQ-x) and the approaches (APPROACH-x).
 
-###  SOL-1 ### {#proscons-1}
+###  APPROACH-1 ### {#proscons-1}
 
-###  SOL-2 ### {#proscons-2}
+###  APPROACH-2 ### {#proscons-2}
 
 - Pros 
     - There is no need for manufactures to deploy and maintain
@@ -444,13 +444,13 @@ NOTE: Write a table that shows relations between the requirements (REQ-x) and th
         a secondary communication channel (e.g., BLE, NFC).
     - Web browsers need to support PAKE-based cipher suites.
 
-### SOL-3 ### {#proscons-3}
+### APPROACH-3 ### {#proscons-3}
 
 - Pros
     - Web services can trust [=devices=] as far as they can trust AS for the [=devices=].
     - If a [=device=] can get [=web service=] information from the AS,
         the [=device=] can configure proper CORS settings in advance.
-        It means that the solution would be familiar with the secure
+        It means that the approach would be familiar with the secure
         local cross-origin access method described in [[CORS-AND-RFC1918]]).
     - The authenticity of [=devices=] can be enhanced when the AS authenticate [=devices=]
         based on attestation keys in TPM on the [=devices=].
@@ -461,14 +461,14 @@ NOTE: Write a table that shows relations between the requirements (REQ-x) and th
     - Another browser API (for example, which allows a [=web service=] to pin a certificate
         in the context of a specific origin) would be needed to support the normal access pattern use case.
 
-### SOL-4 ### {#proscons-4}
+### APPROACH-4 ### {#proscons-4}
 
 - Pros
     - Web services can trust [=devices=] as far as they can trust [=private CAs=] for the [=devices=].
     - Device domain names can be validated if ACME can be extended for local domain names.
     - Existing PKI-based methods for managing the lifecycle of certificates can be used (e.g., CRL, OCSP).
     - If a [=device=] can get [=web service=] information from the AS which has a [=private CA=] role,
-        the [=device=] can configure proper CORS settings in advance as with [[#sol-3]].
+        the [=device=] can configure proper CORS settings in advance as with [[#approach-3]].
     - The authenticity of [=devices=] can be enhanced when the CA issues certificates
         for the [=devices=] based on attestation keys in TPM on the [=devices=].
 - Cons   
@@ -479,12 +479,13 @@ NOTE: Write a table that shows relations between the requirements (REQ-x) and th
 Conclusion {#conclusion}
 ========================
 
-In this document, we introduced possible solutions to enable local HTTPS communications
+In this document, we introduced technical approaches to enable local HTTPS communications
 from browsers to [=devices] that is not publicly accessible.
-However, these solutions would require browser extensions and other protocol
+However, these approaches would require browser extensions and other protocol
 standardization as identified. The motivation came from the industry need of providing
 HTTPS access to IoT devices, majority of which will not have a global domain name
 so that the domain name can be verified and a certificate can be issued.
+
 We hope that this document will spur the discussions within the W3C community so that
 a solution can be developed and standardized.
 
