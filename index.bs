@@ -50,15 +50,24 @@ the need for new emerging markets, such as Internet of Things (IoT).
 Terminology {#terminology}
 ==========================
 
+In this document, we refer to **HTTPS** as a scheme of communication allowed by the [=UA=]
+which uses TLS as a method for ensuring confidentiality of its content and identification/authentication
+of the counterpart of the communication. This means, the scope of the term HTTPS in this document
+is not limited to the `https://` scheme but also includes WebSocket over TLS (`wss://`) and other
+schemes that operate in a similar way. Whenever there is a need to disambiguate so that the term
+specifies the `https://` scheme only, the document will indicate so.
+
+In addtion, this document uses the following terms as defined here:
+
 A <dfn>local network</dfn> is a network defined in [[#target-local-networks]]
 
 A <dfn>UA</dfn> (User Agent) is a browser on a user’s PC, smartphone, tablet
 and so on, which is connected to a [=local network=].
 
-A <dfn>device</dfn> is in the same [=local network=] as the [=UA=], capable of HTTPS/WSS server.
+A <dfn>device</dfn> is in the same [=local network=] as the [=UA=], capable of HTTPS server.
 
 A <dfn>web service</dfn> is a service hosted on the internet and whose frontend is
-loaded on the [=UA=], which accesses to the [=device=] with HTTPS or WSS on the [=local network=].
+loaded on the [=UA=], which accesses to the [=device=] with HTTPS on the [=local network=].
 
 A <dfn>Web PKI certificate</dfn> is a TLS server certificate that can chain up to
 a root CA (Certificate Authority) trusted by the [=UA=]  (preinstalled on the [=UA=]).
