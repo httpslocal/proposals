@@ -1,5 +1,5 @@
 <pre class='metadata'>
-Title: Approaches to achieving HTTPS in Local Network
+Title: Approaches to Achieving HTTPS in Local Network
 Shortname: httpslocal-approaches
 Level: 1
 Status: CG-DRAFT
