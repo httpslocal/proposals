@@ -177,7 +177,7 @@ based on the first class requirement, [[REQ-1]]: Guarantee of Device Trustworthi
  
 This section's description is written for [=Web PKI certificates=] with Server-auth Extended Key Usage.
  
-[=public CAs=] need to verify the DNS name of a certificate at the time of issuance of [=Web PKI certificates=] with Server-auth Extended Key Usage,
+[=Public CAs=] need to verify the DNS name of a certificate at the time of issuance of [=Web PKI certificates=] with Server-auth Extended Key Usage,
 following CA/BForum Baseline Requirement [[CAB-BR]].
 However, a [=public CA=] cannot verify a local network’s local IP address.
 So [=public CAs=] cannot generally issue certificates for [=devices=], barring an exception, which is technically constrained certificates.
@@ -318,7 +318,7 @@ The requirements for browsers can be summarized as follows:
 - Implement the pop-up window for PIN/Password input.
 - Support a method to use a self-signed certificate after the first PAKE-based TLS session.
 
-#### Dependency to other SDOs #### {#dependency-2}
+#### Dependency on other SDOs #### {#dependency-2}
 
 This solution will require work and collaboration with the IETF.
 - [[EC-JPAKE]] was an individual submission and it is currently expired.
@@ -407,7 +407,7 @@ The requirements for browsers can be summarized as follows:
 - Support a TLS certificate type and extensions for using RPK.
 - Implement the pop-up window shown above.
 
-#### Dependency to other SDOs #### {#dependency-3}
+#### Dependency on other SDOs #### {#dependency-3}
 
 This solution will require work and collaboration with the IETF.
 - HTTPS profile for ACE (or extensions for OAuth): Since ACE is based on CoAP/OSCORE,
@@ -479,7 +479,7 @@ The requirements for browsers can be summarized as follows:
 - Support additional parameters of [[FETCH]] API mentioned above.
 - Implement the pop-up window shown above.
 
-#### Dependency to other SDOs #### {#dependency-4}
+#### Dependency on other SDOs #### {#dependency-4}
 
 This solution will require work and collaboration with the IETF.
 - [[PKI-CERTIFICATE-IDENTIFIER-FORMAT-FOR-DEVICES]] is currently an individual submission yet. 
