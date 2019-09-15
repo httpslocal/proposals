@@ -98,11 +98,11 @@ as [[#possible-solutions]] but as [[#existing-solutions]].
 
 Based on [[HTTPSLOCAL-USECASES]], we regard following types of network as [=local network=]:
 - home network
-    - Related use cases: [[UC-01]], [[UC-02]], [[UC-03]], [[UC-06]], [[UC-07]], [[UC-08]]
+    - Related use cases: [[UC-1]], [[UC-2]], [[UC-3]], [[UC-6]], [[UC-7]]
 - intra-company network (includes factory network, building network, etc.)
-    - Related use cases: [[UC-05]], [[UC-09]]
+    - Related use cases: [[UC-5]], [[UC-8]]
 - intra-machine(intra-[=UA=]) network (uses loopback addresses, etc.)
-    - Related use cases: [[UC-04]]
+    - Related use cases: [[UC-4]]
 
 In aspect of IP address spaces, [=local networks=] in this document can be defined as the networks
 that use following address spaces or prefixes:
@@ -120,11 +120,11 @@ into two [=device=] access patterns principle for local HTTPS.
 They are as follows:
 - <dfn>Normal access pattern</dfn>: the [=device=] has web contents and a user types the address of the [=device=] 
     (e.g., `https://device.local`) on the [=UA=] directly and receives the contents.
-    - Related use cases: [[UC-07]]
+    - Related use cases: [[UC-6]]
 - <dfn>Cross-origin access pattern</dfn>: the [=device=] has API endpoints and a web frontend loaded 
     on a [=UA=] from the internet (hereafter, simply called ‘web service’) accesses the APIs
     with a browser API (e.g., [[FETCH]]) and receives the contents.
-    - Related use cases: [[UC-01]], [[UC-02]], [[UC-03]], [[UC-04]], [[UC-05]], [[UC-06]], [[UC-08]], [[UC-09]]
+    - Related use cases: [[UC-1]], [[UC-2]], [[UC-3]], [[UC-4]], [[UC-5]], [[UC-6]], [[UC-7]], [[UC-8]]
 
 All solutions proposed in this document are based on either one or both of the access patterns.
 
@@ -559,49 +559,44 @@ a solution can be developed and standardized.
     "title": "Use Cases and Requirements on HTTPS-enabled Local Network Servers",
     "date": "September 2019"
   },
-  "UC-01": {
-    "href": "https://httpslocal.github.io/usecases/#uc-01",
-    "title": "UC-01: Playing audio content in a home storage device from a cloud service",
+  "UC-1": {
+    "href": "https://httpslocal.github.io/usecases/#uc-1",
+    "title": "UC-1: Photo sharing between online services and home NAS devices",
     "date": "September 2019"
   },
-  "UC-02": {
-    "href": "https://httpslocal.github.io/usecases/#uc-02",
-    "title": "UC-02: Video streaming with cache storage in local network",
+  "UC-2": {
+    "href": "https://httpslocal.github.io/usecases/#uc-2",
+    "title": "UC-2: Video streaming with cache storage in local network",
     "date": "September 2019"
   },
-  "UC-03": {
-    "href": "https://httpslocal.github.io/usecases/#uc-03",
-    "title": "UC-03: Web-based UI for home appliances (input/output constrained devices)",
+  "UC-3": {
+    "href": "https://httpslocal.github.io/usecases/#uc-3",
+    "title": "UC-3: Web-based UI for home appliances (input/output constrained devices)",
     "date": "September 2019"
   },
-  "UC-04": {
-    "href": "https://httpslocal.github.io/usecases/#uc-04",
-    "title": "UC-04: Embedded system monitoring and controlling for display-capable devices",
+  "UC-4": {
+    "href": "https://httpslocal.github.io/usecases/#uc-4",
+    "title": "UC-4: Embedded system monitoring and controlling for display-capable devices",
     "date": "September 2019"
   },
-  "UC-05": {
-    "href": "https://httpslocal.github.io/usecases/#uc-05",
-    "title": "UC-05: Data analysis from analytical and measuring instruments in local network",
+  "UC-5": {
+    "href": "https://httpslocal.github.io/usecases/#uc-5",
+    "title": "UC-5: Data analysis from analytical and measuring instruments in local network",
     "date": "September 2019"
   },
-  "UC-06": {
-    "href": "https://httpslocal.github.io/usecases/#uc-06",
-    "title": "UC-06: Photo sharing between online services and home NAS devices",
+  "UC-6": {
+    "href": "https://httpslocal.github.io/usecases/#uc-6",
+    "title": "UC-6: Secure offline communication for home automation",
     "date": "September 2019"
   },
-  "UC-07": {
-    "href": "https://httpslocal.github.io/usecases/#uc-07",
-    "title": "UC-07: Secure offline communication for home automation",
+  "UC-7": {
+    "href": "https://httpslocal.github.io/usecases/#uc-7",
+    "title": "UC-7: Companion Device for Broadcast Interactive Service",
     "date": "September 2019"
   },
-  "UC-08": {
-    "href": "https://httpslocal.github.io/usecases/#uc-08",
-    "title": "UC-08: Companion Device for Broadcast Interactive Service",
-    "date": "September 2019"
-  },
-  "UC-09": {
-    "href": "https://httpslocal.github.io/usecases/#uc-09",
-    "title": "UC-09: Presenting with Projector at office",
+  "UC-8": {
+    "href": "https://httpslocal.github.io/usecases/#uc-8",
+    "title": "UC-8: Presenting with Projector at office",
     "date": "September 2019"
   },
   "REQ-1": {
