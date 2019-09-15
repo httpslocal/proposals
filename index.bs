@@ -50,15 +50,24 @@ the need for new emerging markets, such as Internet of Things (IoT).
 Terminology {#terminology}
 ==========================
 
+In this document, we refer to **HTTPS** as a scheme of communication allowed by the [=UA=]
+which uses TLS as a method for ensuring confidentiality of its content and identification/authentication
+of the counterpart of the communication. This means, the scope of the term HTTPS in this document
+is not limited to the `https://` scheme but also includes WebSocket over TLS (`wss://`) and other
+schemes that operate in a similar way. Whenever there is a need to disambiguate so that the term
+specifies the `https://` scheme only, the document will indicate so.
+
+In addtion, this document uses the following terms as defined here:
+
 A <dfn>local network</dfn> is a network defined in [[#target-local-networks]]
 
 A <dfn>UA</dfn> (User Agent) is a browser on a user’s PC, smartphone, tablet
 and so on, which is connected to a [=local network=].
 
-A <dfn>device</dfn> is in the same [=local network=] as the [=UA=], capable of HTTPS/WSS server.
+A <dfn>device</dfn> is in the same [=local network=] as the [=UA=], capable of HTTPS server.
 
 A <dfn>web service</dfn> is a service hosted on the internet and whose frontend is
-loaded on the [=UA=], which accesses to the [=device=] with HTTPS or WSS on the [=local network=].
+loaded on the [=UA=], which accesses to the [=device=] with HTTPS on the [=local network=].
 
 A <dfn>Web PKI certificate</dfn> is a TLS server certificate that can chain up to
 a root CA (Certificate Authority) trusted by the [=UA=]  (preinstalled on the [=UA=]).
@@ -149,8 +158,8 @@ larger than other use cases due to the vast nature of IoT devices.
 
 Installing [=non-Web PKI certificates=]  (e.g., self-signed certificates) into a [=UA=] 
 as a trusted one manually is a widely used solution.
-
-NOTE: Write the problems of this solution here.
+Manually installing [=non-Web PKI certificates=]  (e.g., self-signed certificates) onto a [=UA=] as a trusted certificate is a widely used solution.
+However, manual operation can make it prone to user error.
 
 Technical Approaches {#technical-approaches}
 ========================================
@@ -164,9 +173,60 @@ based on the first class requirement, [[REQ-1]]: Guarantee of Device Trustworthi
 
 ## Web PKI based Approaches ## {#web-pki-approaches}
 
-### APPROACH-1: Using Name Constraints Certificates ### {#approach-1}
-
-NOTE: Name constraints certificate based approach here.
+### APPROACH-1: Using technically Constrained Certificates ### {#approach-1}
+ 
+This section's description is written for [=Web PKI certificates=] with Server-auth Extended Key Usage.
+ 
+[=public CAs=] need to verify the DNS name of a certificate at the time of issuance of [=Web PKI certificates=] with Server-auth Extended Key Usage,
+following CA/BForum Baseline Requirement [[CAB-BR]].
+However, a [=public CA=] cannot verify a local network’s local IP address.
+So [=public CAs=] cannot generally issue certificates for [=devices=], barring an exception, which is technically constrained certificates.
+- Technically constrained intermediate CA
+The term "technically constrained intermediate CA" in CABForum's baseline Requirement might be confusing.
+There is a term "technically constrained" in the [[CAB-BR]],
+and "name constraint" is one of requirements for Certificates with "EKU = server-auth" to be "technically constrained"
+If EE (End Entity) certificates will be technically constrained, issuing [=public CA=] do not need to verify the DNS name at the time of issuance,
+and that [=public CA=] can publish certificates for [=devices=].
+ 
+Name constraints seem to working well in many browsers now[[BETTER-TLS]].
+The mechanism of name constraint is well explained by Netflix[BETTER-TLS],
+so we briefly explain how it works in the next paragraph.
+ 
+ 
+- How technically constrained intermediate CA issues [=Web PKI certificates=]
+We assume that the device vendor has to have control over ".camera.example.com," for example.
+ 
+<div align="center">
+<img src="figs/fig_sol_1_1.png" width="480px">
+</div>
+ 
+A [=public CA=] validates the device vendor's control over .camera.example.com,
+and issues a name-constraint intermediate CA cert.
+That intermediate CA is technically constrained, and only able to issue valid certificates with .camera.example.com .
+Since the vendor is controlling .camera.example.com and .camera.example.com has been validated,
+validation of "device1.camera.example.com" can be skipped at that time, and that [=public CA=] would able to issue an EE certificate for device1.camera.example.com.
+After transporting that certificate to a [=device=] somehow, that [=device=] can use a [=Web PKI certificate=].
+ 
+- Possible use case
+ 
+<div align="center">
+<img src="figs/fig_sol_1_2.png" width="480px">
+</div>
+ 
+Here, we assume the DNS server of ".camera.example.com" has a record of [=device=] and
+its local IP(e.g 192.168.2.100) with some mechanism (1).
+So, that DNS server can reply with local IP address.
+The browser can then get the IP address of [=device=] (right hand side solid triangle lines).
+ 
+Then browser can have TLS connection with the [=device=], which has a local ipaddress.
+The device vendor needs to maintain the security of the ".camera.example.com" network.
+ 
+ 
+#### Dependency on other SDOs #### {#dependency-1}
+This solution will require work with device venders as follows:
+- Mechanism to install EE certs onto [=devices=] and update them at least once every other year[[CAB-BR]].
+- Attestation mechanism to confirm that the [=devices=] are a product of a specific device vender.
+- Revocation mechanism for [=devices=] with unauthorized modification
 
 ## Non-Web PKI based Approaches ## {#non-web-pki-approaches}
 
@@ -567,6 +627,14 @@ a solution can be developed and standardized.
     "href": "https://cabforum.org/wp-content/uploads/Guidance-Deprecated-Internal-Names.pdf",
     "title": "Internal Server Names and IP Address Requirements for SSL",
     "date": "June 2012"
+  },
+  "CAB-BR": {
+    "href": "https://cabforum.org/baseline-requirements-documents/",
+    "title": "CA/BForum Baseline Requirement"
+  },
+  "BETTER-TLS": {
+    "href": "https://medium.com/netflix-techblog/bettertls-c9915cd255c0",
+    "title": "BetterTLS A Name Constraints test suite for HTTPS clients, created by Netflix"
   },
   "MBED-TLS": {
     "href": "https://www.mbed.com/en/technologies/security/mbed-tls/",
