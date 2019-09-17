@@ -181,23 +181,25 @@ This section's description is written for [=Web PKI certificates=] with Server-a
 following CA/BForum Baseline Requirement [[CAB-BR]].
 However, a [=public CA=] cannot verify a local network’s local IP address.
 So [=public CAs=] cannot generally issue certificates for [=devices=], barring an exception, which is technically constrained certificates.
-- Technically constrained intermediate CA
+
+#### Technically constrained intermediate CA #### {#approach-1-1}
+
 The term "technically constrained intermediate CA" in CABForum's baseline Requirement might be confusing.
 There is a term "technically constrained" in the [[CAB-BR]],
 and "name constraint" is one of requirements for Certificates with "EKU = server-auth" to be "technically constrained"
 If EE (End Entity) certificates will be technically constrained, issuing [=public CA=] do not need to verify the DNS name at the time of issuance,
 and that [=public CA=] can publish certificates for [=devices=].
  
-Name constraints seem to working well in many browsers now[[BETTER-TLS]].
-The mechanism of name constraint is well explained by Netflix[BETTER-TLS],
+Name constraints seem to working well in many browsers now [[BETTER-TLS]].
+The mechanism of name constraint is well explained by Netflix [[BETTER-TLS]],
 so we briefly explain how it works in the next paragraph.
  
- 
-- How technically constrained intermediate CA issues [=Web PKI certificates=]
+#### How technically constrained intermediate CA issues [=Web PKI certificates=] #### {#approach-1-2}
+
 We assume that the device vendor has to have control over ".camera.example.com," for example.
  
 <div align="center">
-<img src="figs/fig_sol_1_1.png" width="480px">
+<img src="figs/fig_sol_1_1.png" width="360px">
 </div>
  
 A [=public CA=] validates the device vendor's control over .camera.example.com,
@@ -207,10 +209,10 @@ Since the vendor is controlling .camera.example.com and .camera.example.com has 
 validation of "device1.camera.example.com" can be skipped at that time, and that [=public CA=] would able to issue an EE certificate for device1.camera.example.com.
 After transporting that certificate to a [=device=] somehow, that [=device=] can use a [=Web PKI certificate=].
  
-- Possible use case
+#### Possible use case #### {#approach-1-3}
  
 <div align="center">
-<img src="figs/fig_sol_1_2.png" width="480px">
+<img src="figs/fig_sol_1_2.png" width="720px">
 </div>
  
 Here, we assume the DNS server of ".camera.example.com" has a record of [=device=] and
