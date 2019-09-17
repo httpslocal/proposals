@@ -243,7 +243,7 @@ should not be restricted only to mDNS ([[RFC6762]]).
 ### APPROACH-2: Using Shared Secret ### {#approach-2}
 
 This approach is based on the user grant and the use of shared password in
-which PAKE (e.g., J-PAKE([[RFC8236]])) is used for the establishment of
+which PAKE (e.g., dragonfly [[RFC7664]], J-PAKE [[RFC8236]]) is used for the establishment of
 a TLS session between the [=UA=] and the [=device=].
 It is worthwhile to mention that J-PAKE has already been implemented in [[MBED-TLS]]
 and also the use of J-PAKE has been discussed in [[W3C-SECOND-SCREEN-WG]].
@@ -260,7 +260,7 @@ the [=UA=] allows the access only if the user grants the access through the UI s
 </div>
 
 The UI will be displayed when the [=device=] URL has local domain name and the underlying TLS handshake
-detects the [=device=] supports a PAKE-based cipher suite (e.g., [[EC-JPAKE]]).
+detects the [=device=] supports a PAKE-based cipher suite (e.g., [[RFC8492]], [[EC-JPAKE]], [[PAKE-WITH-TLS1.3]]).
 
 To make sure that the `device.local` displayed on the pop-up window is really
 the same as the domain name of the [=device=] which the user intends to grant the access to,
@@ -316,17 +316,16 @@ password entry for subsequent TLS sessions.
 #### Browser Requirements #### {#requirements-2}
 
 The requirements for browsers can be summarized as follows:
-- Support additional cipher suites for PAKE(e.g., [[EC-JPAKE]]).
+- Support additional cipher suites for PAKE (e.g., [[RFC8492]], [[EC-JPAKE]], [[PAKE-WITH-TLS1.3]]).
 - Implement the pop-up window for PIN/Password input.
-- Support a method to use a self-signed certificate after the first PAKE-based TLS session.
+- Support a method to use a self-signed certificate after the first PAKE-based TLS session to skip user consent every time the TLS handshake happens.
 
 #### Dependency on other SDOs #### {#dependency-2}
 
 This approach will require work and collaboration with the IETF.
-- [[EC-JPAKE]] was an individual submission and it is currently expired.
+- Both [[EC-JPAKE]] and [[PAKE-WITH-TLS1.3]] were individual submissions and they are currently expired.
     If W3C embraces this approach, the work needs to resumed and completed.
-- A method to bind a domain name to a TLS session over [[EC-JPAKE]] needs to 
-    be specified and standardized.
+- A method to bind a private domain name to a PAKE-based TLS session needs to be specified and standardized.
 
 ### APPROACH-3: Using Application Layer Access Token ### {#approach-3}
 
@@ -642,8 +641,14 @@ a solution can be developed and standardized.
     "title": "W3C Second Screen WG"
   },
   "EC-JPAKE": {
+    "authors": ["R. Cragie", "F. Hao"],
     "href": "https://tools.ietf.org/html/draft-cragie-tls-ecjpake-01",
     "title": "Elliptic Curve J-PAKE Cipher Suites"
+  },
+  "PAKE-WITH-TLS1.3": {
+    "authors": ["R. Barnes", "O. Friel"],
+    "href": "https://tools.ietf.org/html/draft-barnes-tls-pake-04",
+    "title": "Usage of PAKE with TLS 1.3"
   },
   "HTTPS-FOR-LOCAL-DOMAINS": {
     "href": "https://docs.google.com/document/d/170rFC91jqvpFrKIqG4K8Vox8AL4LeQXzfikBQXYPmzU/edit?usp=shari",
