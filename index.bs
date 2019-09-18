@@ -243,11 +243,11 @@ should not be restricted only to mDNS ([[RFC6762]]).
 ### APPROACH-2: Using Shared Secret ### {#approach-2}
 
 This approach is based on the user grant and the use of shared password in
-which PAKE (e.g., dragonfly [[RFC7664]], J-PAKE [[RFC8236]]) is used for the establishment of
+which PAKE (e.g., [[SPAKE2]], dragonfly [[RFC7664]], J-PAKE [[RFC8236]]) is used for the establishment of
 a TLS session between the [=UA=] and the [=device=].
 
 NOTE: It is worthwhile to mention that J-PAKE has already been implemented in [[MBED-TLS]]
-and also the use of J-PAKE has been discussed in [[W3C-SECOND-SCREEN-WG]].
+and the use of [[SPAKE2]] has been discussed in [[W3C-SECOND-SCREEN-WG]].
 
 #### Device Access Flow #### {#approach-2-flow}
 
@@ -263,7 +263,7 @@ This approach can be realized on both of the access patterns mentioned in [[#tar
     </div>
 
 1. The UI will be displayed when the [=device=] URL has local domain name and the underlying TLS handshake
-    detects the [=device=] supports a PAKE-based cipher suite (e.g., [[RFC8492]], [[EC-JPAKE]], [[PAKE-WITH-TLS1.3]]).
+    detects the [=device=] supports a PAKE-based cipher suite (e.g., [[SPAKE2]], [[RFC8492]], [[EC-JPAKE]], [[PAKE-WITH-TLS1.3]]).
 1. To make sure that the `device.local` displayed on the pop-up window is really
     the same as the domain name of the [=device=] which the user intends to grant the access to,
     user inserts either a PIN or password through the pop-up window.
@@ -327,7 +327,7 @@ fetch("https://device.local/stuff", {
 #### Browser Requirements #### {#requirements-2}
 
 The requirements for browsers can be summarized as follows:
-- Support additional cipher suites for PAKE (e.g., [[RFC8492]], [[EC-JPAKE]], [[PAKE-WITH-TLS1.3]]).
+- Support additional cipher suites for PAKE (e.g., [[SPAKE2]], [[RFC8492]], [[EC-JPAKE]], [[PAKE-WITH-TLS1.3]]).
 - Implement the pop-up window for PIN/Password input.
 - Support a method to distinguish [=devices=] which have the same names.
 - Extend [[FETCH]] API to support the method to distinguish [=devices=] as demonstrated in this section.
@@ -336,7 +336,7 @@ The requirements for browsers can be summarized as follows:
 #### Dependency on other SDOs #### {#dependency-2}
 
 This approach will require work and collaboration with the IETF.
-- Both [[EC-JPAKE]] and [[PAKE-WITH-TLS1.3]] were individual submissions and they are currently expired.
+- [[SPAKE2]], [[EC-JPAKE]] and [[PAKE-WITH-TLS1.3]] were individual submissions and they are currently expired.
     If W3C embraces this approach, the work needs to resumed and completed.
 - A method to bind a private domain name to a PAKE-based TLS session needs to be specified and standardized.
 
@@ -657,6 +657,11 @@ a solution can be developed and standardized.
     "authors": ["R. Cragie", "F. Hao"],
     "href": "https://tools.ietf.org/html/draft-cragie-tls-ecjpake-01",
     "title": "Elliptic Curve J-PAKE Cipher Suites"
+  },
+  "SPAKE2": {
+    "authors": ["W. Ladd", "B. Kaduk"],
+    "href": "https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08",
+    "title": "SPAKE2, a PAKE"
   },
   "PAKE-WITH-TLS1.3": {
     "authors": ["R. Barnes", "O. Friel"],

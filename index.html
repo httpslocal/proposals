@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version db559f98d6c99655936abc96647a0e88ba98a9cf" name="generator">
   <link href="https://httpslocal.github.io/proposals/" rel="canonical">
-  <meta content="018e706f96796ac03bbacf6a41c73326dcc94414" name="document-revision">
+  <meta content="1c92ab98c049fdaeaa9a86def5ee88cf659815e9" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1768,9 +1768,9 @@ are applicable name which can be resolved but the name resolution methods
 should not be restricted only to mDNS (<a data-link-type="biblio" href="#biblio-rfc6762">[RFC6762]</a>).</p>
    <h4 class="heading settled" data-level="5.2.1" id="approach-2"><span class="secno">5.2.1. </span><span class="content">APPROACH-2: Using Shared Secret</span><a class="self-link" href="#approach-2"></a></h4>
    <p>This approach is based on the user grant and the use of shared password in
-which PAKE (e.g., dragonfly <a data-link-type="biblio" href="#biblio-rfc7664">[RFC7664]</a>, J-PAKE <a data-link-type="biblio" href="#biblio-rfc8236">[RFC8236]</a>) is used for the establishment of
+which PAKE (e.g., <a data-link-type="biblio" href="#biblio-spake2">[SPAKE2]</a>, dragonfly <a data-link-type="biblio" href="#biblio-rfc7664">[RFC7664]</a>, J-PAKE <a data-link-type="biblio" href="#biblio-rfc8236">[RFC8236]</a>) is used for the establishment of
 a TLS session between the <a data-link-type="dfn" href="#ua" id="ref-for-ua①②">UA</a> and the <a data-link-type="dfn" href="#device" id="ref-for-device②③">device</a>.</p>
-   <p class="note" role="note"><span>NOTE:</span> It is worthwhile to mention that J-PAKE has already been implemented in <a data-link-type="biblio" href="#biblio-mbed-tls">[MBED-TLS]</a> and also the use of J-PAKE has been discussed in <a data-link-type="biblio" href="#biblio-w3c-second-screen-wg">[W3C-SECOND-SCREEN-WG]</a>.</p>
+   <p class="note" role="note"><span>NOTE:</span> It is worthwhile to mention that J-PAKE has already been implemented in <a data-link-type="biblio" href="#biblio-mbed-tls">[MBED-TLS]</a> and the use of <a data-link-type="biblio" href="#biblio-spake2">[SPAKE2]</a> has been discussed in <a data-link-type="biblio" href="#biblio-w3c-second-screen-wg">[W3C-SECOND-SCREEN-WG]</a>.</p>
    <h5 class="heading settled" data-level="5.2.1.1" id="approach-2-flow"><span class="secno">5.2.1.1. </span><span class="content">Device Access Flow</span><a class="self-link" href="#approach-2-flow"></a></h5>
    <p>This approach can be realized on both of the access patterns mentioned in <a href="#target-access-patterns">§3.3 Target Access Patterns</a>.</p>
    <p><strong>Normal Access Pattern</strong></p>
@@ -1781,7 +1781,7 @@ the <a data-link-type="dfn" href="#ua" id="ref-for-ua①④">UA</a> allows the a
      <div align="center"> <img src="figs/fig_sol_2_1.png" width="480px"> </div>
     <li data-md>
      <p>The UI will be displayed when the <a data-link-type="dfn" href="#device" id="ref-for-device②⑤">device</a> URL has local domain name and the underlying TLS handshake
-detects the <a data-link-type="dfn" href="#device" id="ref-for-device②⑥">device</a> supports a PAKE-based cipher suite (e.g., <a data-link-type="biblio" href="#biblio-rfc8492">[RFC8492]</a>, <a data-link-type="biblio" href="#biblio-ec-jpake">[EC-JPAKE]</a>, <a data-link-type="biblio" href="#biblio-pake-with-tls13">[PAKE-WITH-TLS1.3]</a>).</p>
+detects the <a data-link-type="dfn" href="#device" id="ref-for-device②⑥">device</a> supports a PAKE-based cipher suite (e.g., <a data-link-type="biblio" href="#biblio-spake2">[SPAKE2]</a>, <a data-link-type="biblio" href="#biblio-rfc8492">[RFC8492]</a>, <a data-link-type="biblio" href="#biblio-ec-jpake">[EC-JPAKE]</a>, <a data-link-type="biblio" href="#biblio-pake-with-tls13">[PAKE-WITH-TLS1.3]</a>).</p>
     <li data-md>
      <p>To make sure that the <code>device.local</code> displayed on the pop-up window is really
 the same as the domain name of the <a data-link-type="dfn" href="#device" id="ref-for-device②⑦">device</a> which the user intends to grant the access to,
@@ -1837,7 +1837,7 @@ and also have a way to use the fingerprint as demonstrated below.</p>
    <p>The requirements for browsers can be summarized as follows:</p>
    <ul>
     <li data-md>
-     <p>Support additional cipher suites for PAKE (e.g., <a data-link-type="biblio" href="#biblio-rfc8492">[RFC8492]</a>, <a data-link-type="biblio" href="#biblio-ec-jpake">[EC-JPAKE]</a>, <a data-link-type="biblio" href="#biblio-pake-with-tls13">[PAKE-WITH-TLS1.3]</a>).</p>
+     <p>Support additional cipher suites for PAKE (e.g., <a data-link-type="biblio" href="#biblio-spake2">[SPAKE2]</a>, <a data-link-type="biblio" href="#biblio-rfc8492">[RFC8492]</a>, <a data-link-type="biblio" href="#biblio-ec-jpake">[EC-JPAKE]</a>, <a data-link-type="biblio" href="#biblio-pake-with-tls13">[PAKE-WITH-TLS1.3]</a>).</p>
     <li data-md>
      <p>Implement the pop-up window for PIN/Password input.</p>
     <li data-md>
@@ -1851,7 +1851,7 @@ and also have a way to use the fingerprint as demonstrated below.</p>
    <p>This approach will require work and collaboration with the IETF.</p>
    <ul>
     <li data-md>
-     <p>Both <a data-link-type="biblio" href="#biblio-ec-jpake">[EC-JPAKE]</a> and <a data-link-type="biblio" href="#biblio-pake-with-tls13">[PAKE-WITH-TLS1.3]</a> were individual submissions and they are currently expired.
+     <p><a data-link-type="biblio" href="#biblio-spake2">[SPAKE2]</a>, <a data-link-type="biblio" href="#biblio-ec-jpake">[EC-JPAKE]</a> and <a data-link-type="biblio" href="#biblio-pake-with-tls13">[PAKE-WITH-TLS1.3]</a> were individual submissions and they are currently expired.
 If W3C embraces this approach, the work needs to resumed and completed.</p>
     <li data-md>
      <p>A method to bind a private domain name to a PAKE-based TLS session needs to be specified and standardized.</p>
@@ -2322,6 +2322,8 @@ a solution can be developed and standardized.</p>
    <dd>D. Harkins, Ed.. <a href="https://tools.ietf.org/html/rfc8492">Secure Password Ciphersuites for Transport Layer Security (TLS)</a>. February 2019. Informational. URL: <a href="https://tools.ietf.org/html/rfc8492">https://tools.ietf.org/html/rfc8492</a>
    <dt id="biblio-secure-contexts">[SECURE-CONTEXTS]
    <dd>Mike West. <a href="https://www.w3.org/TR/secure-contexts/">Secure Contexts</a>. 15 September 2016. CR. URL: <a href="https://www.w3.org/TR/secure-contexts/">https://www.w3.org/TR/secure-contexts/</a>
+   <dt id="biblio-spake2">[SPAKE2]
+   <dd>W. Ladd; B. Kaduk. <a href="https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08">SPAKE2, a PAKE</a>. URL: <a href="https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08">https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08</a>
    <dt id="biblio-tpac-2017-breakout-session">[TPAC-2017-breakout-session]
    <dd><a href="https://www.w3.org/wiki/File:TPAC2017_httpslocal-2.pdf">How can we provide the devices with valid certificates?</a>. URL: <a href="https://www.w3.org/wiki/File:TPAC2017_httpslocal-2.pdf">https://www.w3.org/wiki/File:TPAC2017_httpslocal-2.pdf</a>
    <dt id="biblio-uc-1">[UC-1]
