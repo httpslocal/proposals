@@ -98,11 +98,11 @@ as [[#technical-approaches]] but as [[#existing-solutions]].
 
 Based on [[HTTPSLOCAL-USECASES]], we regard following types of network as [=local network=]:
 - home network
-    - Related use cases: [[UC-01]], [[UC-02]], [[UC-03]], [[UC-06]], [[UC-07]], [[UC-08]]
+    - Related use cases: [[UC-1]], [[UC-2]], [[UC-3]], [[UC-6]], [[UC-7]]
 - intra-company network (includes factory network, building network, etc.)
-    - Related use cases: [[UC-05]], [[UC-09]]
+    - Related use cases: [[UC-5]], [[UC-8]]
 - intra-machine(intra-[=UA=]) network (uses loopback addresses, etc.)
-    - Related use cases: [[UC-04]]
+    - Related use cases: [[UC-4]]
 
 In aspect of IP address spaces, [=local networks=] in this document can be defined as the networks
 that use following address spaces or prefixes:
@@ -120,11 +120,11 @@ into two [=device=] access patterns principle for local HTTPS.
 They are as follows:
 - <dfn>Normal access pattern</dfn>: the [=device=] has web contents and a user types the address of the [=device=] 
     (e.g., `https://device.local`) on the [=UA=] directly and receives the contents.
-    - Related use cases: [[UC-07]]
+    - Related use cases: [[UC-6]]
 - <dfn>Cross-origin access pattern</dfn>: the [=device=] has API endpoints and a web frontend loaded 
     on a [=UA=] from the internet (hereafter, simply called ‘web service’) accesses the APIs
     with a browser API (e.g., [[FETCH]]) and receives the contents.
-    - Related use cases: [[UC-01]], [[UC-02]], [[UC-03]], [[UC-04]], [[UC-05]], [[UC-06]], [[UC-08]], [[UC-09]]
+    - Related use cases: [[UC-1]], [[UC-2]], [[UC-3]], [[UC-4]], [[UC-5]], [[UC-6]], [[UC-7]], [[UC-8]]
 
 All approaches proposed in this document are based on either one or both of the access patterns.
 
@@ -164,7 +164,7 @@ However, manual operation can make it prone to user error.
 Technical Approaches {#technical-approaches}
 ========================================
 
-In this section, we describes technical approaches for using HTTPS in [=local network=]
+In this section, we describe technical approaches for using HTTPS in [=local network=]
 except for using normal [=Web PKI certificates=], and complicated (and maybe dangerous)
 manual operations referred in [[#existing-solutions]].
 
@@ -177,12 +177,12 @@ based on the first class requirement, [[REQ-1]]: Guarantee of Device Trustworthi
  
 This section's description is written for [=Web PKI certificates=] with Server-auth Extended Key Usage.
  
-[=public CAs=] need to verify the DNS name of a certificate at the time of issuance of [=Web PKI certificates=] with Server-auth Extended Key Usage,
+[=Public CAs=] need to verify the DNS name of a certificate at the time of issuance of [=Web PKI certificates=] with Server-auth Extended Key Usage,
 following CA/BForum Baseline Requirement [[CAB-BR]].
 However, a [=public CA=] cannot verify a local network’s local IP address.
 So [=public CAs=] cannot generally issue certificates for [=devices=], barring an exception, which is technically constrained certificates.
 
-#### Technically constrained intermediate CA #### {#approach-1-1}
+**Technically constrained intermediate CA**
 
 The term "technically constrained intermediate CA" in CABForum's baseline Requirement might be confusing.
 There is a term "technically constrained" in the [[CAB-BR]],
@@ -194,7 +194,7 @@ Name constraints seem to working well in many browsers now [[BETTER-TLS]].
 The mechanism of name constraint is well explained by Netflix [[BETTER-TLS]],
 so we briefly explain how it works in the next paragraph.
  
-#### How technically constrained intermediate CA issues [=Web PKI certificates=] #### {#approach-1-2}
+**How technically constrained intermediate CA issues Web PKI certificates**
 
 We assume that the device vendor has to have control over ".camera.example.com," for example.
  
@@ -208,8 +208,8 @@ That intermediate CA is technically constrained, and only able to issue valid ce
 Since the vendor is controlling .camera.example.com and .camera.example.com has been validated,
 validation of "device1.camera.example.com" can be skipped at that time, and that [=public CA=] would able to issue an EE certificate for device1.camera.example.com.
 After transporting that certificate to a [=device=] somehow, that [=device=] can use a [=Web PKI certificate=].
- 
-#### Possible use case #### {#approach-1-3}
+
+**Possible use case**
  
 <div align="center">
 <img src="figs/fig_sol_1_2.png" width="720px">
@@ -243,47 +243,71 @@ should not be restricted only to mDNS ([[RFC6762]]).
 ### APPROACH-2: Using Shared Secret ### {#approach-2}
 
 This approach is based on the user grant and the use of shared password in
-which PAKE (e.g., J-PAKE([[RFC8236]])) is used for the establishment of
+which PAKE (e.g., [[SPAKE2]], dragonfly [[RFC7664]], J-PAKE [[RFC8236]]) is used for the establishment of
 a TLS session between the [=UA=] and the [=device=].
-It is worthwhile to mention that J-PAKE has already been implemented in [[MBED-TLS]]
-and also the use of J-PAKE has been discussed in [[W3C-SECOND-SCREEN-WG]].
+
+NOTE: It is worthwhile to mention that J-PAKE has already been implemented in [[MBED-TLS]]
+and the use of [[SPAKE2]] has been discussed in [[W3C-SECOND-SCREEN-WG]].
+
+#### Device Access Flow #### {#approach-2-flow}
 
 This approach can be realized on both of the access patterns mentioned in [[#target-access-patterns]].
 
-#### [=Normal Access Pattern=] #### {#approach-2-nap}
+**Normal Access Pattern**
 
-When a user inputs a [=device=] URL (`https://device.local`) to the address bar of the [=UA=] directly,
-the [=UA=] allows the access only if the user grants the access through the UI shown in the figure below.
+1. When a user inputs a [=device=] URL (`https://device.local`) to the address bar of the [=UA=] directly,
+    the [=UA=] allows the access only if the user grants the access through the UI shown in the figure below.
 
-<div align="center">
-<img src="figs/fig_sol_2_1.png" width="480px">
-</div>
+    <div align="center">
+    <img src="figs/fig_sol_2_1.png" width="480px">
+    </div>
 
-The UI will be displayed when the [=device=] URL has local domain name and the underlying TLS handshake
-detects the [=device=] supports a PAKE-based cipher suite (e.g., [[EC-JPAKE]]).
-
-To make sure that the `device.local` displayed on the pop-up window is really
-the same as the domain name of the [=device=] which the user intends to grant the access to,
-user inserts either a PIN or password through the pop-up window.
-
-When the PIN or password is correct, the TLS handshake will be completed successfully and the user can
-get a web UI of the [=device=] without any negative security indicators.
+1. The UI will be displayed when the [=device=] URL has local domain name and the underlying TLS handshake
+    detects the [=device=] supports a PAKE-based cipher suite (e.g., [[SPAKE2]], [[RFC8492]], [[EC-JPAKE]], [[PAKE-WITH-TLS1.3]]).
+1. To make sure that the `device.local` displayed on the pop-up window is really
+    the same as the domain name of the [=device=] which the user intends to grant the access to,
+    user inserts either a PIN or password through the pop-up window.
+1. When the PIN or password is correct, the TLS handshake will be completed successfully and the user can
+    get a web UI of the [=device=] without any negative security indicators.
 
 The above flow can be achieved by extending the UI with adding the cipher suites in the browser.
 This will enable binding the displayed domain name to the physical device.
 
-#### [=Cross-Origin Access Pattern=] #### {#approach-2-coap}
+**Cross-Origin Access Pattern**
 
-When a [=web service=]  (e.g., `https://device-user.example.com`) accesses the [=device=] via the [=UA=].
-The [=UA=] allows the access only if the user grants the access through the UI shown in the figure below.
+1. When a [=web service=]  (e.g., `https://device-user.example.com`) accesses the [=device=] via the [=UA=].
+    The [=UA=] allows the access only if the user grants the access through the UI shown in the figure below.
 
-<div align="center">
-<img src="figs/fig_sol_2_2.png" width="480px">
-</div>
+    <div align="center">
+    <img src="figs/fig_sol_2_2.png" width="480px">
+    </div>
 
-The UI will be displayed when the underlying [[FETCH]] API is called for the access
-with the extension below and the [=device=] successfully performs a TLS handshake
-using a PAKE-based cipher suite.
+1. The UI will be displayed when the underlying [[FETCH]] API is called for the access to the [=device=] that
+    has a private domain name and successfully performs a TLS handshake using a PAKE-based cipher suite.
+1. Subsequent flow is the same as the [=normal access pattern=] described above.
+
+As with the [=normal access pattern=] flow mentioned above, this flow can be achieved by extending
+the UI with adding the PAKE-based cipher suites in the browser.
+
+#### Skipping user consent #### {#approach-2-skip-user-consent}
+
+This approach might have to have a way to mitigate the PIN or password entry for subsequent TLS sessions,
+or the user has to input it every time the user uses the [=device=].
+
+To skip user consent, a specific method on how to bind the ununique private domain name (`device.local`)
+to the TLS session established by using PAKE needs to be defined to distinguish [=devices=] which have the same names
+as mentioned in [[HTTPS-FOR-LOCAL-DOMAINS]].
+
+As for this PAKE-based approach, for example, using device ‘private domain name + fingerprint in self-signed certificate’
+as the TLS server identifier (which is defined in [[EC-JPAKE]] can be considered as one of the candidate approaches.
+The use of self-signed certificate after the first PAKE based TLS session needs to be defined as well.
+
+To skip user consent on the [=normal access pattern=], the browser has to manage the addtional element (e.g., fingerprint
+in the self-signed certificate) in context with the origin of the [=device=] internally.
+
+On the other hand, as for the [=cross-origin access pattern=], [[FETCH]]] API might have to have a way to return the fingerprint
+in the self-signed certficate provided by the [=device=] as the result of the TLS handshake with the PAKE-based cipher suite,
+and also have a way to use the fingerprint as demonstrated below.
 
 <div class="example">
 The following code is an example of [[FETCH]] API extension to support this approach.
@@ -300,33 +324,21 @@ fetch("https://device.local/stuff", {
 </pre>
 </div>
 
-Subsequent flow is the same as the [[#approach-2-nap]].
-To achieve this [=cross-origin access pattern=] flow, in addition to the extensions required by [[#approach-2-nap]],
-the [=UA=] have to support the [[FETCH]] API extension demonstrated above.
-
-NOTE: However, a specific method on how to bind the name to the TLS session
-needs to be defined to distinguish [=devices=] which have the same names as mentioned
-in [[HTTPS-FOR-LOCAL-DOMAINS]]. This method is needed for both approaches [[#approach-3]] and [[#approach-4]].
-For example, using device ‘local domain name + fingerprint in self-signed certificate’
-as the TLS server identifier (which is defined in [[EC-JPAKE]] can be considered as
-one of the candidate approaches. The use of self-signed certificate after the first
-J-PAKE based TLS session needs to be defined as well. This will mitigate the PIN or
-password entry for subsequent TLS sessions.
-
 #### Browser Requirements #### {#requirements-2}
 
 The requirements for browsers can be summarized as follows:
-- Support additional cipher suites for PAKE(e.g., [[EC-JPAKE]]).
+- Support additional cipher suites for PAKE (e.g., [[SPAKE2]], [[RFC8492]], [[EC-JPAKE]], [[PAKE-WITH-TLS1.3]]).
 - Implement the pop-up window for PIN/Password input.
-- Support a method to use a self-signed certificate after the first PAKE-based TLS session.
+- Support a method to distinguish [=devices=] which have the same names.
+- Extend [[FETCH]] API to support the method to distinguish [=devices=] as demonstrated in this section.
+- Support a method to use a self-signed certificate after the first PAKE-based TLS session to skip user consent every time the TLS handshake happens.
 
-#### Dependency to other SDOs #### {#dependency-2}
+#### Dependency on other SDOs #### {#dependency-2}
 
 This approach will require work and collaboration with the IETF.
-- [[EC-JPAKE]] was an individual submission and it is currently expired.
+- [[SPAKE2]], [[EC-JPAKE]] and [[PAKE-WITH-TLS1.3]] were individual submissions and they are currently expired.
     If W3C embraces this approach, the work needs to resumed and completed.
-- A method to bind a domain name to a TLS session over [[EC-JPAKE]] needs to 
-    be specified and standardized.
+- A method to bind a private domain name to a PAKE-based TLS session needs to be specified and standardized.
 
 ### APPROACH-3: Using Application Layer Access Token ### {#approach-3}
 
@@ -409,7 +421,7 @@ The requirements for browsers can be summarized as follows:
 - Support a TLS certificate type and extensions for using RPK.
 - Implement the pop-up window shown above.
 
-#### Dependency to other SDOs #### {#dependency-3}
+#### Dependency on other SDOs #### {#dependency-3}
 
 This approach will require work and collaboration with the IETF.
 - HTTPS profile for ACE (or extensions for OAuth): Since ACE is based on CoAP/OSCORE,
@@ -462,7 +474,7 @@ is executed by the ACME server’s frontend loaded on a browser
 that can communicate with the [=device=] in a [=local network=].
 Although the challenge through the [=UA=] has some advantages
 (e.g., it can be based on a user grant, there is no need to change the firewall settings),
-it requires a [[FETCH]] API extension for approach #2 that enables the access to the device
+it requires a [[FETCH]] API extension for [[#approach-2]] that enables the access to the device
 based on self-signed certificates or RPKs.
 
 It is important to note that there are other industry efforts on similar concepts
@@ -481,7 +493,7 @@ The requirements for browsers can be summarized as follows:
 - Support additional parameters of [[FETCH]] API mentioned above.
 - Implement the pop-up window shown above.
 
-#### Dependency to other SDOs #### {#dependency-4}
+#### Dependency on other SDOs #### {#dependency-4}
 
 This approach will require work and collaboration with the IETF.
 - [[PKI-CERTIFICATE-IDENTIFIER-FORMAT-FOR-DEVICES]] is currently an individual submission yet. 
@@ -542,7 +554,7 @@ Conclusion {#conclusion}
 ========================
 
 In this document, we introduced technical approaches to enable local HTTPS communications
-from browsers to [=devices] that is not publicly accessible.
+from browsers to [=devices=] that is not publicly accessible.
 However, these approaches would require browser extensions and other protocol
 standardization as identified. The motivation came from the industry need of providing
 HTTPS access to IoT devices, majority of which will not have a global domain name
@@ -562,49 +574,44 @@ a solution can be developed and standardized.
     "title": "Use Cases and Requirements on HTTPS-enabled Local Network Servers",
     "date": "September 2019"
   },
-  "UC-01": {
-    "href": "https://httpslocal.github.io/usecases/#uc-01",
-    "title": "UC-01: Playing audio content in a home storage device from a cloud service",
+  "UC-1": {
+    "href": "https://httpslocal.github.io/usecases/#uc-1",
+    "title": "UC-1: Photo sharing between online services and home NAS devices",
     "date": "September 2019"
   },
-  "UC-02": {
-    "href": "https://httpslocal.github.io/usecases/#uc-02",
-    "title": "UC-02: Video streaming with cache storage in local network",
+  "UC-2": {
+    "href": "https://httpslocal.github.io/usecases/#uc-2",
+    "title": "UC-2: Video streaming with cache storage in local network",
     "date": "September 2019"
   },
-  "UC-03": {
-    "href": "https://httpslocal.github.io/usecases/#uc-03",
-    "title": "UC-03: Web-based UI for home appliances (input/output constrained devices)",
+  "UC-3": {
+    "href": "https://httpslocal.github.io/usecases/#uc-3",
+    "title": "UC-3: Web-based UI for home appliances (input/output constrained devices)",
     "date": "September 2019"
   },
-  "UC-04": {
-    "href": "https://httpslocal.github.io/usecases/#uc-04",
-    "title": "UC-04: Embedded system monitoring and controlling for display-capable devices",
+  "UC-4": {
+    "href": "https://httpslocal.github.io/usecases/#uc-4",
+    "title": "UC-4: Embedded system monitoring and controlling for display-capable devices",
     "date": "September 2019"
   },
-  "UC-05": {
-    "href": "https://httpslocal.github.io/usecases/#uc-05",
-    "title": "UC-05: Data analysis from analytical and measuring instruments in local network",
+  "UC-5": {
+    "href": "https://httpslocal.github.io/usecases/#uc-5",
+    "title": "UC-5: Data analysis from analytical and measuring instruments in local network",
     "date": "September 2019"
   },
-  "UC-06": {
-    "href": "https://httpslocal.github.io/usecases/#uc-06",
-    "title": "UC-06: Photo sharing between online services and home NAS devices",
+  "UC-6": {
+    "href": "https://httpslocal.github.io/usecases/#uc-6",
+    "title": "UC-6: Secure offline communication for home automation",
     "date": "September 2019"
   },
-  "UC-07": {
-    "href": "https://httpslocal.github.io/usecases/#uc-07",
-    "title": "UC-07: Secure offline communication for home automation",
+  "UC-7": {
+    "href": "https://httpslocal.github.io/usecases/#uc-7",
+    "title": "UC-7: Companion Device for Broadcast Interactive Service",
     "date": "September 2019"
   },
-  "UC-08": {
-    "href": "https://httpslocal.github.io/usecases/#uc-08",
-    "title": "UC-08: Companion Device for Broadcast Interactive Service",
-    "date": "September 2019"
-  },
-  "UC-09": {
-    "href": "https://httpslocal.github.io/usecases/#uc-09",
-    "title": "UC-09: Presenting with Projector at office",
+  "UC-8": {
+    "href": "https://httpslocal.github.io/usecases/#uc-8",
+    "title": "UC-8: Presenting with Projector at office",
     "date": "September 2019"
   },
   "REQ-1": {
@@ -647,8 +654,19 @@ a solution can be developed and standardized.
     "title": "W3C Second Screen WG"
   },
   "EC-JPAKE": {
+    "authors": ["R. Cragie", "F. Hao"],
     "href": "https://tools.ietf.org/html/draft-cragie-tls-ecjpake-01",
     "title": "Elliptic Curve J-PAKE Cipher Suites"
+  },
+  "SPAKE2": {
+    "authors": ["W. Ladd", "B. Kaduk"],
+    "href": "https://tools.ietf.org/html/draft-irtf-cfrg-spake2-08",
+    "title": "SPAKE2, a PAKE"
+  },
+  "PAKE-WITH-TLS1.3": {
+    "authors": ["R. Barnes", "O. Friel"],
+    "href": "https://tools.ietf.org/html/draft-barnes-tls-pake-04",
+    "title": "Usage of PAKE with TLS 1.3"
   },
   "HTTPS-FOR-LOCAL-DOMAINS": {
     "href": "https://docs.google.com/document/d/170rFC91jqvpFrKIqG4K8Vox8AL4LeQXzfikBQXYPmzU/edit?usp=shari",
