@@ -164,7 +164,7 @@ However, manual operation can make it prone to user error.
 Technical Approaches {#technical-approaches}
 ========================================
 
-In this section, we describes technical approaches for using HTTPS in [=local network=]
+In this section, we describe technical approaches for using HTTPS in [=local network=]
 except for using normal [=Web PKI certificates=], and complicated (and maybe dangerous)
 manual operations referred in [[#existing-solutions]].
 
@@ -474,7 +474,7 @@ is executed by the ACME server’s frontend loaded on a browser
 that can communicate with the [=device=] in a [=local network=].
 Although the challenge through the [=UA=] has some advantages
 (e.g., it can be based on a user grant, there is no need to change the firewall settings),
-it requires a [[FETCH]] API extension for approach #2 that enables the access to the device
+it requires a [[FETCH]] API extension for [[#approach-2]] that enables the access to the device
 based on self-signed certificates or RPKs.
 
 It is important to note that there are other industry efforts on similar concepts
@@ -554,7 +554,7 @@ Conclusion {#conclusion}
 ========================
 
 In this document, we introduced technical approaches to enable local HTTPS communications
-from browsers to [=devices] that is not publicly accessible.
+from browsers to [=devices=] that is not publicly accessible.
 However, these approaches would require browser extensions and other protocol
 standardization as identified. The motivation came from the industry need of providing
 HTTPS access to IoT devices, majority of which will not have a global domain name
