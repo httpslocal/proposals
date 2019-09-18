@@ -245,45 +245,69 @@ should not be restricted only to mDNS ([[RFC6762]]).
 This approach is based on the user grant and the use of shared password in
 which PAKE (e.g., dragonfly [[RFC7664]], J-PAKE [[RFC8236]]) is used for the establishment of
 a TLS session between the [=UA=] and the [=device=].
-It is worthwhile to mention that J-PAKE has already been implemented in [[MBED-TLS]]
+
+NOTE: It is worthwhile to mention that J-PAKE has already been implemented in [[MBED-TLS]]
 and also the use of J-PAKE has been discussed in [[W3C-SECOND-SCREEN-WG]].
+
+#### Device Access Flow #### {#approach-2-flow}
 
 This approach can be realized on both of the access patterns mentioned in [[#target-access-patterns]].
 
-#### [=Normal Access Pattern=] #### {#approach-2-nap}
+**Normal Access Pattern**
 
-When a user inputs a [=device=] URL (`https://device.local`) to the address bar of the [=UA=] directly,
-the [=UA=] allows the access only if the user grants the access through the UI shown in the figure below.
+1. When a user inputs a [=device=] URL (`https://device.local`) to the address bar of the [=UA=] directly,
+    the [=UA=] allows the access only if the user grants the access through the UI shown in the figure below.
 
-<div align="center">
-<img src="figs/fig_sol_2_1.png" width="480px">
-</div>
+    <div align="center">
+    <img src="figs/fig_sol_2_1.png" width="480px">
+    </div>
 
-The UI will be displayed when the [=device=] URL has local domain name and the underlying TLS handshake
-detects the [=device=] supports a PAKE-based cipher suite (e.g., [[RFC8492]], [[EC-JPAKE]], [[PAKE-WITH-TLS1.3]]).
-
-To make sure that the `device.local` displayed on the pop-up window is really
-the same as the domain name of the [=device=] which the user intends to grant the access to,
-user inserts either a PIN or password through the pop-up window.
-
-When the PIN or password is correct, the TLS handshake will be completed successfully and the user can
-get a web UI of the [=device=] without any negative security indicators.
+1. The UI will be displayed when the [=device=] URL has local domain name and the underlying TLS handshake
+    detects the [=device=] supports a PAKE-based cipher suite (e.g., [[RFC8492]], [[EC-JPAKE]], [[PAKE-WITH-TLS1.3]]).
+1. To make sure that the `device.local` displayed on the pop-up window is really
+    the same as the domain name of the [=device=] which the user intends to grant the access to,
+    user inserts either a PIN or password through the pop-up window.
+1. When the PIN or password is correct, the TLS handshake will be completed successfully and the user can
+    get a web UI of the [=device=] without any negative security indicators.
 
 The above flow can be achieved by extending the UI with adding the cipher suites in the browser.
 This will enable binding the displayed domain name to the physical device.
 
-#### [=Cross-Origin Access Pattern=] #### {#approach-2-coap}
+**Cross-Origin Access Pattern**
 
-When a [=web service=]  (e.g., `https://device-user.example.com`) accesses the [=device=] via the [=UA=].
-The [=UA=] allows the access only if the user grants the access through the UI shown in the figure below.
+1. When a [=web service=]  (e.g., `https://device-user.example.com`) accesses the [=device=] via the [=UA=].
+    The [=UA=] allows the access only if the user grants the access through the UI shown in the figure below.
 
-<div align="center">
-<img src="figs/fig_sol_2_2.png" width="480px">
-</div>
+    <div align="center">
+    <img src="figs/fig_sol_2_2.png" width="480px">
+    </div>
 
-The UI will be displayed when the underlying [[FETCH]] API is called for the access
-with the extension below and the [=device=] successfully performs a TLS handshake
-using a PAKE-based cipher suite.
+1. The UI will be displayed when the underlying [[FETCH]] API is called for the access to the [=device=] that
+    has a private domain name and successfully performs a TLS handshake using a PAKE-based cipher suite.
+1. Subsequent flow is the same as the [=normal access pattern=] described above.
+
+As with the [=normal access pattern=] flow mentioned above, this flow can be achieved by extending
+the UI with adding the PAKE-based cipher suites in the browser.
+
+#### Skipping user consent #### {#approach-2-skip-user-consent}
+
+This approach might have to have a way to mitigate the PIN or password entry for subsequent TLS sessions,
+or the user has to input it every time the user uses the [=device=].
+
+To skip user consent, a specific method on how to bind the ununique private domain name (`device.local`)
+to the TLS session established by using PAKE needs to be defined to distinguish [=devices=] which have the same names
+as mentioned in [[HTTPS-FOR-LOCAL-DOMAINS]].
+
+As for this PAKE-based approach, for example, using device ‘private domain name + fingerprint in self-signed certificate’
+as the TLS server identifier (which is defined in [[EC-JPAKE]] can be considered as one of the candidate approaches.
+The use of self-signed certificate after the first PAKE based TLS session needs to be defined as well.
+
+To skip user consent on the [=normal access pattern=], the browser has to manage the addtional element (e.g., fingerprint
+in the self-signed certificate) in context with the origin of the [=device=] internally.
+
+On the other hand, as for the [=cross-origin access pattern=], [[FETCH]]] API might have to have a way to return the fingerprint
+in the self-signed certficate provided by the [=device=] as the result of the TLS handshake with the PAKE-based cipher suite,
+and also have a way to use the fingerprint as demonstrated below.
 
 <div class="example">
 The following code is an example of [[FETCH]] API extension to support this approach.
@@ -300,24 +324,13 @@ fetch("https://device.local/stuff", {
 </pre>
 </div>
 
-Subsequent flow is the same as the [[#approach-2-nap]].
-To achieve this [=cross-origin access pattern=] flow, in addition to the extensions required by [[#approach-2-nap]],
-the [=UA=] have to support the [[FETCH]] API extension demonstrated above.
-
-NOTE: However, a specific method on how to bind the name to the TLS session
-needs to be defined to distinguish [=devices=] which have the same names as mentioned
-in [[HTTPS-FOR-LOCAL-DOMAINS]]. This method is needed for both approaches [[#approach-3]] and [[#approach-4]].
-For example, using device ‘local domain name + fingerprint in self-signed certificate’
-as the TLS server identifier (which is defined in [[EC-JPAKE]] can be considered as
-one of the candidate approaches. The use of self-signed certificate after the first
-J-PAKE based TLS session needs to be defined as well. This will mitigate the PIN or
-password entry for subsequent TLS sessions.
-
 #### Browser Requirements #### {#requirements-2}
 
 The requirements for browsers can be summarized as follows:
 - Support additional cipher suites for PAKE (e.g., [[RFC8492]], [[EC-JPAKE]], [[PAKE-WITH-TLS1.3]]).
 - Implement the pop-up window for PIN/Password input.
+- Support a method to distinguish [=devices=] which have the same names.
+- Extend [[FETCH]] API to support the method to distinguish [=devices=] as demonstrated in this section.
 - Support a method to use a self-signed certificate after the first PAKE-based TLS session to skip user consent every time the TLS handshake happens.
 
 #### Dependency on other SDOs #### {#dependency-2}
