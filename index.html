@@ -1214,7 +1214,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version db559f98d6c99655936abc96647a0e88ba98a9cf" name="generator">
   <link href="https://httpslocal.github.io/proposals/" rel="canonical">
-  <meta content="1732eaa68f1b05e42ef2a2dff7480165cafee5cf" name="document-revision">
+  <meta content="018e706f96796ac03bbacf6a41c73326dcc94414" name="document-revision">
 <style>/* style-md-lists */
 
 /* This is a weird hack for me not yet following the commonmark spec
@@ -1525,10 +1525,7 @@ A human-readable <a href="http://www.w3.org/community/about/agreements/cla-deed/
         <li>
          <a href="#approach-1"><span class="secno">5.1.1</span> <span class="content">APPROACH-1: Using technically Constrained Certificates</span></a>
          <ol class="toc">
-          <li><a href="#approach-1-1"><span class="secno">5.1.1.1</span> <span class="content">Technically constrained intermediate CA</span></a>
-          <li><a href="#approach-1-2"><span class="secno">5.1.1.2</span> <span class="content">How technically constrained intermediate CA issues <span>Web PKI certificates</span></span></a>
-          <li><a href="#approach-1-3"><span class="secno">5.1.1.3</span> <span class="content">Possible use case</span></a>
-          <li><a href="#dependency-1"><span class="secno">5.1.1.4</span> <span class="content">Dependency on other SDOs</span></a>
+          <li><a href="#dependency-1"><span class="secno">5.1.1.1</span> <span class="content">Dependency on other SDOs</span></a>
          </ol>
        </ol>
       <li>
@@ -1715,7 +1712,7 @@ larger than other use cases due to the vast nature of IoT devices.</p>
 Manually installing <a data-link-type="dfn" href="#non-web-pki-certificate" id="ref-for-non-web-pki-certificate②">non-Web PKI certificates</a> (e.g., self-signed certificates) onto a <a data-link-type="dfn" href="#ua" id="ref-for-ua①⓪">UA</a> as a trusted certificate is a widely used solution.
 However, manual operation can make it prone to user error.</p>
    <h2 class="heading settled" data-level="5" id="technical-approaches"><span class="secno">5. </span><span class="content">Technical Approaches</span><a class="self-link" href="#technical-approaches"></a></h2>
-   <p>In this section, we describes technical approaches for using HTTPS in <a data-link-type="dfn" href="#local-network" id="ref-for-local-network⑥">local network</a> except for using normal <a data-link-type="dfn" href="#web-pki-certificate" id="ref-for-web-pki-certificate③">Web PKI certificates</a>, and complicated (and maybe dangerous)
+   <p>In this section, we describe technical approaches for using HTTPS in <a data-link-type="dfn" href="#local-network" id="ref-for-local-network⑥">local network</a> except for using normal <a data-link-type="dfn" href="#web-pki-certificate" id="ref-for-web-pki-certificate③">Web PKI certificates</a>, and complicated (and maybe dangerous)
 manual operations referred in <a href="#existing-solutions">§4 Existing Solutions</a>.</p>
    <p>Each approach defined in the following sections is categorized
 based on the first class requirement, <a data-link-type="biblio" href="#biblio-req-1">[REQ-1]</a>: Guarantee of Device Trustworthiness.</p>
@@ -1726,7 +1723,7 @@ based on the first class requirement, <a data-link-type="biblio" href="#biblio-r
 following CA/BForum Baseline Requirement <a data-link-type="biblio" href="#biblio-cab-br">[CAB-BR]</a>.
 However, a <a data-link-type="dfn" href="#public-ca" id="ref-for-public-ca④">public CA</a> cannot verify a local network’s local IP address.
 So <a data-link-type="dfn" href="#public-ca" id="ref-for-public-ca⑤">public CAs</a> cannot generally issue certificates for <a data-link-type="dfn" href="#device" id="ref-for-device①②">devices</a>, barring an exception, which is technically constrained certificates.</p>
-   <h5 class="heading settled" data-level="5.1.1.1" id="approach-1-1"><span class="secno">5.1.1.1. </span><span class="content">Technically constrained intermediate CA</span><a class="self-link" href="#approach-1-1"></a></h5>
+   <p><strong>Technically constrained intermediate CA</strong></p>
    <p>The term "technically constrained intermediate CA" in CABForum’s baseline Requirement might be confusing.
 There is a term "technically constrained" in the <a data-link-type="biblio" href="#biblio-cab-br">[CAB-BR]</a>,
 and "name constraint" is one of requirements for Certificates with "EKU = server-auth" to be "technically constrained"
@@ -1735,7 +1732,7 @@ and that <a data-link-type="dfn" href="#public-ca" id="ref-for-public-ca⑦">pub
    <p>Name constraints seem to working well in many browsers now <a data-link-type="biblio" href="#biblio-better-tls">[BETTER-TLS]</a>.
 The mechanism of name constraint is well explained by Netflix <a data-link-type="biblio" href="#biblio-better-tls">[BETTER-TLS]</a>,
 so we briefly explain how it works in the next paragraph.</p>
-   <h5 class="heading settled" data-level="5.1.1.2" id="approach-1-2"><span class="secno">5.1.1.2. </span><span class="content">How technically constrained intermediate CA issues <a data-link-type="dfn" href="#web-pki-certificate" id="ref-for-web-pki-certificate⑥">Web PKI certificates</a></span><a class="self-link" href="#approach-1-2"></a></h5>
+   <p><strong>How technically constrained intermediate CA issues Web PKI certificates</strong></p>
    <p>We assume that the device vendor has to have control over ".camera.example.com," for example.</p>
    <div align="center"> <img src="figs/fig_sol_1_1.png" width="360px"> </div>
    <p>A <a data-link-type="dfn" href="#public-ca" id="ref-for-public-ca⑧">public CA</a> validates the device vendor’s control over .camera.example.com,
@@ -1743,8 +1740,8 @@ and issues a name-constraint intermediate CA cert.
 That intermediate CA is technically constrained, and only able to issue valid certificates with .camera.example.com .
 Since the vendor is controlling .camera.example.com and .camera.example.com has been validated,
 validation of "device1.camera.example.com" can be skipped at that time, and that <a data-link-type="dfn" href="#public-ca" id="ref-for-public-ca⑨">public CA</a> would able to issue an EE certificate for device1.camera.example.com.
-After transporting that certificate to a <a data-link-type="dfn" href="#device" id="ref-for-device①④">device</a> somehow, that <a data-link-type="dfn" href="#device" id="ref-for-device①⑤">device</a> can use a <a data-link-type="dfn" href="#web-pki-certificate" id="ref-for-web-pki-certificate⑦">Web PKI certificate</a>.</p>
-   <h5 class="heading settled" data-level="5.1.1.3" id="approach-1-3"><span class="secno">5.1.1.3. </span><span class="content">Possible use case</span><a class="self-link" href="#approach-1-3"></a></h5>
+After transporting that certificate to a <a data-link-type="dfn" href="#device" id="ref-for-device①④">device</a> somehow, that <a data-link-type="dfn" href="#device" id="ref-for-device①⑤">device</a> can use a <a data-link-type="dfn" href="#web-pki-certificate" id="ref-for-web-pki-certificate⑥">Web PKI certificate</a>.</p>
+   <p><strong>Possible use case</strong></p>
    <div align="center"> <img src="figs/fig_sol_1_2.png" width="720px"> </div>
    <p>Here, we assume the DNS server of ".camera.example.com" has a record of <a data-link-type="dfn" href="#device" id="ref-for-device①⑥">device</a> and
 its local IP(e.g 192.168.2.100) with some mechanism (1).
@@ -1752,7 +1749,7 @@ So, that DNS server can reply with local IP address.
 The browser can then get the IP address of <a data-link-type="dfn" href="#device" id="ref-for-device①⑦">device</a> (right hand side solid triangle lines).</p>
    <p>Then browser can have TLS connection with the <a data-link-type="dfn" href="#device" id="ref-for-device①⑧">device</a>, which has a local ipaddress.
 The device vendor needs to maintain the security of the ".camera.example.com" network.</p>
-   <h5 class="heading settled" data-level="5.1.1.4" id="dependency-1"><span class="secno">5.1.1.4. </span><span class="content">Dependency on other SDOs</span><a class="self-link" href="#dependency-1"></a></h5>
+   <h5 class="heading settled" data-level="5.1.1.1" id="dependency-1"><span class="secno">5.1.1.1. </span><span class="content">Dependency on other SDOs</span><a class="self-link" href="#dependency-1"></a></h5>
     This solution will require work with device venders as follows: 
    <ul>
     <li data-md>
@@ -1973,7 +1970,7 @@ is executed by the ACME server’s frontend loaded on a browser
 that can communicate with the <a data-link-type="dfn" href="#device" id="ref-for-device⑤①">device</a> in a <a data-link-type="dfn" href="#local-network" id="ref-for-local-network⑧">local network</a>.
 Although the challenge through the <a data-link-type="dfn" href="#ua" id="ref-for-ua②③">UA</a> has some advantages
 (e.g., it can be based on a user grant, there is no need to change the firewall settings),
-it requires a <a data-link-type="biblio" href="#biblio-fetch">[FETCH]</a> API extension for approach #2 that enables the access to the device
+it requires a <a data-link-type="biblio" href="#biblio-fetch">[FETCH]</a> API extension for <a href="#approach-2">§5.2.1 APPROACH-2: Using Shared Secret</a> that enables the access to the device
 based on self-signed certificates or RPKs.</p>
    <p>It is important to note that there are other industry efforts on similar concepts
 as vendor-issued certificate (hereafter, <a data-link-type="dfn" href="#private-ca" id="ref-for-private-ca③">private CA</a> issued certificate).
@@ -2087,7 +2084,7 @@ for the <a data-link-type="dfn" href="#device" id="ref-for-device⑥⑥">devices
    </ul>
    <h2 class="heading settled" data-level="6" id="conclusion"><span class="secno">6. </span><span class="content">Conclusion</span><a class="self-link" href="#conclusion"></a></h2>
    <p>In this document, we introduced technical approaches to enable local HTTPS communications
-from browsers to [=devices] that is not publicly accessible.
+from browsers to <a data-link-type="dfn" href="#device" id="ref-for-device⑥⑧">devices</a> that is not publicly accessible.
 However, these approaches would require browser extensions and other protocol
 standardization as identified. The motivation came from the industry need of providing
 HTTPS access to IoT devices, majority of which will not have a global domain name
@@ -2382,11 +2379,8 @@ a solution can be developed and standardized.</p>
     <li><a href="#ref-for-device①">3.1. Target Devices</a> <a href="#ref-for-device②">(2)</a> <a href="#ref-for-device③">(3)</a>
     <li><a href="#ref-for-device④">3.3. Target Access Patterns</a> <a href="#ref-for-device⑤">(2)</a> <a href="#ref-for-device⑥">(3)</a> <a href="#ref-for-device⑦">(4)</a>
     <li><a href="#ref-for-device⑧">4.1. Web PKI based Solutions</a> <a href="#ref-for-device⑨">(2)</a> <a href="#ref-for-device①⓪">(3)</a> <a href="#ref-for-device①①">(4)</a>
-    <li><a href="#ref-for-device①②">5.1.1. APPROACH-1: Using technically Constrained Certificates</a>
-    <li><a href="#ref-for-device①③">5.1.1.1. Technically constrained intermediate CA</a>
-    <li><a href="#ref-for-device①④">5.1.1.2. How technically constrained intermediate CA issues Web PKI certificates</a> <a href="#ref-for-device①⑤">(2)</a>
-    <li><a href="#ref-for-device①⑥">5.1.1.3. Possible use case</a> <a href="#ref-for-device①⑦">(2)</a> <a href="#ref-for-device①⑧">(3)</a>
-    <li><a href="#ref-for-device①⑨">5.1.1.4. Dependency on other SDOs</a> <a href="#ref-for-device②⓪">(2)</a> <a href="#ref-for-device②①">(3)</a>
+    <li><a href="#ref-for-device①②">5.1.1. APPROACH-1: Using technically Constrained Certificates</a> <a href="#ref-for-device①③">(2)</a> <a href="#ref-for-device①④">(3)</a> <a href="#ref-for-device①⑤">(4)</a> <a href="#ref-for-device①⑥">(5)</a> <a href="#ref-for-device①⑦">(6)</a> <a href="#ref-for-device①⑧">(7)</a>
+    <li><a href="#ref-for-device①⑨">5.1.1.1. Dependency on other SDOs</a> <a href="#ref-for-device②⓪">(2)</a> <a href="#ref-for-device②①">(3)</a>
     <li><a href="#ref-for-device②②">5.2. Non-Web PKI based Approaches</a>
     <li><a href="#ref-for-device②③">5.2.1. APPROACH-2: Using Shared Secret</a>
     <li><a href="#ref-for-device②④">5.2.1.1. Device Access Flow</a> <a href="#ref-for-device②⑤">(2)</a> <a href="#ref-for-device②⑥">(3)</a> <a href="#ref-for-device②⑦">(4)</a> <a href="#ref-for-device②⑧">(5)</a> <a href="#ref-for-device②⑨">(6)</a> <a href="#ref-for-device③⓪">(7)</a>
@@ -2398,6 +2392,7 @@ a solution can be developed and standardized.</p>
     <li><a href="#ref-for-device⑤②">5.3.2. APPROACH-2</a> <a href="#ref-for-device⑤③">(2)</a>
     <li><a href="#ref-for-device⑤④">5.3.3. APPROACH-3</a> <a href="#ref-for-device⑤⑤">(2)</a> <a href="#ref-for-device⑤⑥">(3)</a> <a href="#ref-for-device⑤⑦">(4)</a> <a href="#ref-for-device⑤⑧">(5)</a> <a href="#ref-for-device⑤⑨">(6)</a> <a href="#ref-for-device⑥⓪">(7)</a>
     <li><a href="#ref-for-device⑥①">5.3.4. APPROACH-4</a> <a href="#ref-for-device⑥②">(2)</a> <a href="#ref-for-device⑥③">(3)</a> <a href="#ref-for-device⑥④">(4)</a> <a href="#ref-for-device⑥⑤">(5)</a> <a href="#ref-for-device⑥⑥">(6)</a> <a href="#ref-for-device⑥⑦">(7)</a>
+    <li><a href="#ref-for-device⑥⑧">6. Conclusion</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="web-service">
@@ -2418,8 +2413,7 @@ a solution can be developed and standardized.</p>
     <li><a href="#ref-for-web-pki-certificate①">3.1. Target Devices</a>
     <li><a href="#ref-for-web-pki-certificate②">4.1. Web PKI based Solutions</a>
     <li><a href="#ref-for-web-pki-certificate③">5. Technical Approaches</a>
-    <li><a href="#ref-for-web-pki-certificate④">5.1.1. APPROACH-1: Using technically Constrained Certificates</a> <a href="#ref-for-web-pki-certificate⑤">(2)</a>
-    <li><a href="#ref-for-web-pki-certificate⑥">5.1.1.2. How technically constrained intermediate CA issues Web PKI certificates</a> <a href="#ref-for-web-pki-certificate⑦">(2)</a>
+    <li><a href="#ref-for-web-pki-certificate④">5.1.1. APPROACH-1: Using technically Constrained Certificates</a> <a href="#ref-for-web-pki-certificate⑤">(2)</a> <a href="#ref-for-web-pki-certificate⑥">(3)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="non-web-pki-certificate">
@@ -2433,9 +2427,7 @@ a solution can be developed and standardized.</p>
    <b><a href="#public-ca">#public-ca</a></b><b>Referenced in:</b>
    <ul>
     <li><a href="#ref-for-public-ca">4.1. Web PKI based Solutions</a> <a href="#ref-for-public-ca①">(2)</a> <a href="#ref-for-public-ca②">(3)</a>
-    <li><a href="#ref-for-public-ca③">5.1.1. APPROACH-1: Using technically Constrained Certificates</a> <a href="#ref-for-public-ca④">(2)</a> <a href="#ref-for-public-ca⑤">(3)</a>
-    <li><a href="#ref-for-public-ca⑥">5.1.1.1. Technically constrained intermediate CA</a> <a href="#ref-for-public-ca⑦">(2)</a>
-    <li><a href="#ref-for-public-ca⑧">5.1.1.2. How technically constrained intermediate CA issues Web PKI certificates</a> <a href="#ref-for-public-ca⑨">(2)</a>
+    <li><a href="#ref-for-public-ca③">5.1.1. APPROACH-1: Using technically Constrained Certificates</a> <a href="#ref-for-public-ca④">(2)</a> <a href="#ref-for-public-ca⑤">(3)</a> <a href="#ref-for-public-ca⑥">(4)</a> <a href="#ref-for-public-ca⑦">(5)</a> <a href="#ref-for-public-ca⑧">(6)</a> <a href="#ref-for-public-ca⑨">(7)</a>
    </ul>
   </aside>
   <aside class="dfn-panel" data-for="private-ca">
