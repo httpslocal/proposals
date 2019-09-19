@@ -364,62 +364,86 @@ The ACE components have the following relationships:
     has an account for the AS and the ownership information to [=device=] has been
     registered to the AS in advance.
 
-Under the above relationships, the client ([=web service=]) can get an access token
-to access the [=device=] based on user’s approval. At this time, the client can also
-get the RS information that includes an URI and an RPK(Raw Public Key)([[RFC7250]])
-or self-signed certificate of the [=device=]  (step (B) as shown in above figure).
-Since the existing browsers do not permit the access to the [=device=] with
-the access token (step (C) in above figure), browser API and related UI
-need to be extended to enable the client to access the [=device=] only when the client
-provides the [=UA=] with the RS information (a self-signed certificate or RPK)
-as a trusted one.
+Under the above relationships, HTTPS communications from the client ([=web service=]) to the [=device=]
+can be achieved based on the following flows.
 
-#### [=Cross-Origin Access Pattern=] #### {#approach-3-coap}
+#### Device Setup Flow #### {#approach-3-flow-1}
 
-The RS information can be sent to the [=UA=] as an extended parameter of [[FETCH]] API as follows:
+Before the [=web service=] accesses the [=device=], the [=device=] registers itself to the AS in some way.
+For example, the registration flow might be as follows:
 
-<div class="example">
-The following code is an example of [[FETCH]] API extension to support this approach.
-<pre highlight="js">
-// When RS Information includes a RPK, 
-fetch("https://device.local/stuff", {
-  tlsExtension: {
-    // type of the TLS extension.
-    type: "rpk",
-    // a base64-encoded raw public key or its fingerprint.
-    pinnedIdentity: "8fwpbctkMAq2x73orFsOXMruxWnmFSyhXioQmclhJ5L="}});
+1. As a precondition, the AS issues an attestation key and installs it into the [=device=]
+    on the manufacturing process.
+2. As a bootstrapping step, using the attestation key as a signing key, the [=device=] creates
+    a RPK (Raw Public Key)([[RFC7250]]) or a certificate signded by the attestation key.
+3. The [=device=] sends the RPK or the certificate to the AS.
+4. The AS validates the signature by using the attestation key and registers the [=device=]
+    as a trusted one if the validation succeeds.
 
-// When RS Informatin includes a self-signed certificate, 
-fetch("https://device.local/stuff", {
-  tlsExtension: {
-    // type of the TLS extension.
-    //     'pkix' might be a default value that can be omitted.
-    type: "pkix",
-    // a base64-encoded SPKI of the certificate or its fingerprint
-    pinnedIdentity: "8fwpbctkMAq2x73orFsOXMruxWnmFSyhXioQmclhJ5L="}});
-</pre>
-</div>
-
-When the [[FETCH]] API above is called, the [=UA=] shows a following pop-up window.
-
-<div align="center">
-<img src="figs/fig_sol_3_2.png" width="480px">
-</div>
-
-As the result, HTTPS accesses from the [=web service=] to the [=device=] are achieved
-by the [=UA=] based on the trust relationship between the client and the AS (and the [=device=])
-and with user’s explicit approval.
-
-In addition, when the trust relationship between AS and the [=devices=] is built on attestation
+In addition, when the trust relationship between the AS and the [=devices=] is built on attestation
 keys in TPM (Trusted Platform Module) on the [=devices=], the authenticity of the [=devices=] can
 be enhanced. The use of the attestation keys is applicable to [[#approach-4]] as well.
+
+#### Device Access Flow #### {#approach-3-flow-2}
+
+This approach can apparently support only the [=cross-origin access pattern=]
+because the accessor to the [=device=] is an ACE or OAuth client.
+Therefore, we describes the device access flow only for the [=cross-origin access pattern=].
+
+**Cross-Origin Access Pattern**
+
+1. The [=web service=] can get an access token to access the [=device=] based on user’s approval.
+    At this time, the [=web service=] can also get the RS information that includes an URI and
+    an RPK or self-signed certificate of the [=device=]  (step (B) as shown in above figure).
+2. Since the existing browsers do not permit the access to the [=device=] with the access token (step (C) in above figure),
+    browser API and related UI need to be extended to enable the [=web service=] to access the [=device=]
+    only when the client provides the [=UA=] with the RS information (a self-signed certificate or RPK)
+    as a trusted one.
+3. The RS information can be sent to the [=UA=] as an extended parameter of [[FETCH]] API as follows:
+
+    <div class="example">
+    The following code is an example of [[FETCH]] API extension to support this approach.
+    <pre highlight="js">
+    // When RS Information includes a RPK,
+    fetch("https://device.local/stuff", {
+      tlsExtension: {
+        // type of the TLS extension.
+        type: "rpk",
+        // a base64-encoded raw public key or its fingerprint.
+        pinnedIdentity: "8fwpbctkMAq2x73orFsOXMruxWnmFSyhXioQmclhJ5L="}});
+
+    // When RS Informatin includes a self-signed certificate,
+    fetch("https://device.local/stuff", {
+      tlsExtension: {
+        // type of the TLS extension.
+        //     'pkix' might be a default value that can be omitted.
+        type: "pkix",
+        // a base64-encoded SPKI of the certificate or its fingerprint
+        pinnedIdentity: "8fwpbctkMAq2x73orFsOXMruxWnmFSyhXioQmclhJ5L="}});
+    </pre>
+    </div>
+
+4. When the [[FETCH]] API above is called, the [=UA=] shows a following pop-up window.
+
+    <div align="center">
+    <img src="figs/fig_sol_3_2.png" width="480px">
+    </div>
+
+5. As the result, HTTPS accesses from the [=web service=] to the [=device=] are achieved
+    by the [=UA=] based on the trust relationship between the [=web service=] and the AS (and the [=device=])
+    and with user’s explicit approval.
+
+As mentioned above, the flow can be achieved by extending the UI and [[FETCH]] API, and supporting
+the cipher suites for RPK [[RFC7250]].
 
 #### Browser Requirements #### {#requirements-3}
 
 The requirements for browsers can be summarized as follows:
-- Support additional parameters of [[FETCH]] API mentioned above.
 - Support a TLS certificate type and extensions for using RPK.
+- Support additional parameters of [[FETCH]] API mentioned above to support RPK cipher suites for TLS
+    and distinguish [=devices=] which have the same private domain names.
 - Implement the pop-up window shown above.
+- Support a method to distinguish [=devices=] which have the same names.
 
 #### Dependency on other SDOs #### {#dependency-3}
 
@@ -559,7 +583,6 @@ However, these approaches would require browser extensions and other protocol
 standardization as identified. The motivation came from the industry need of providing
 HTTPS access to IoT devices, majority of which will not have a global domain name
 so that the domain name can be verified and a certificate can be issued.
-
 We hope that this document will spur the discussions within the W3C community so that
 a solution can be developed and standardized.
 
